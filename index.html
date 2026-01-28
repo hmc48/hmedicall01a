@@ -94,7 +94,7 @@ const CONFIG = {"baseAudioUrl": "https://YOURNAME.github.io/audio", "characters"
   <select id="character"><option value="shikoku">01四国めたん</option><option value="zundamon">02ずんだもん</option><option value="kasukabe">03春日部つむぎ</option></select><br><br>
 
   <label>チャイム</label><br>
-  <select id="chimes">__CHIMES_OPTIONS__</select><br><br>
+  <select id="chimes"><option>大変お待たせしました</option><option>お待たせしました</option><option>お呼び出しいたします</option><option>なし</option></select><br><br>
 
   <label>前文</label><br>
   <select id="prefix"><option>大変お待たせしました</option><option>お待たせしました</option><option>お呼び出しいたします</option><option>なし</option></select><br><br>
@@ -209,6 +209,7 @@ function renderHistory() {
 function saveSettings() {
   settings = {
     character: character.value,
+    chime: chimes.value,
     prefix: prefix.value,
     block: block.value,
     place: place.value
