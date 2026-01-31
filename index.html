@@ -164,9 +164,9 @@ function renderCurrentSettings() {
   const char = CONFIG.characters.find(c => c.id === settings.character);
   document.getElementById("currentSettings").innerHTML = `
     <div>キャラクター：${char ? char.name : "-"}</div>
-    <div>チャイム：${settings.chime}</div>
-    <div>ブロック：${settings.block}</div>
-    <div>場所：${settings.place}</div>
+    <div>${settings.chime}</div>
+    <div>${settings.block}</div>
+    <div>${settings.place}</div>
   `;
 } 
 
