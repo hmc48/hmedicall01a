@@ -62,6 +62,9 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 </header>
 
 <div id="home" class="view active">
+  <img id="homeCharacterImage" src="" alt="キャラクター画像" 
+       style="position:absolute; top:10px; right:10px; height:80px;">
+
   <div id="display">----</div>
 
   <!-- ★ 設定内容表示 -->
@@ -249,6 +252,27 @@ function renderHistory() {
 const characterSelect = document.getElementById("character");
 const characterImage  = document.getElementById("characterImage");
 
+const homeCharacterImage = document.getElementById("homeCharacterImage");
+
+// ホーム画面の画像を更新する関数
+function updateHomeCharacterImage() {
+  const char = CONFIG.characters.find(c => c.id === settings.character);
+  if(char){
+    homeCharacterImage.src = char.image;
+  } else {
+    homeCharacterImage.src = "";
+  }
+}
+
+// 設定画面のキャラクター変更時にホーム画面も更新
+characterSelect.addEventListener("change", () => {
+  updateCharacterImage();      // 設定画面用
+  updateHomeCharacterImage();  // ホーム画面用
+});
+
+// 初期表示
+updateHomeCharacterImage();
+
 // 初期表示
 function updateCharacterImage() {
   const char = CONFIG.characters.find(c => c.id === characterSelect.value);
@@ -274,6 +298,7 @@ function saveSettings() {
     room_10: rooms_10.value,
     room_1: rooms_1.value,
     place: place.value
+    updateHomeCharacterImage(); // ホーム画面の画像も更新
   };
   localStorage.setItem("settings", JSON.stringify(settings));
   renderCurrentSettings();
