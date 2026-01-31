@@ -97,12 +97,15 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 
   <a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener">
     <button type="button">キャラクター詳細</button>
+
   </a>
   <br><br>
 
   <label>キャラクター</label><br>
-  <select id="character"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select><br><br>
+  <select id="character"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select>
+  <img id="characterImage" src="" alt="キャラクター画像" style="height:100px; vertical-align:middle; margin-left:10px;"><br><br>
 
+  
   <label>チャイム</label><br>
   <select id="chime"><option>＿</option><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option></select><br><br>
 
@@ -242,6 +245,23 @@ function renderHistory() {
     ul.appendChild(li);
   });
 }
+
+const characterSelect = document.getElementById("character");
+const characterImage  = document.getElementById("characterImage");
+
+// 初期表示
+function updateCharacterImage() {
+  const char = CONFIG.characters.find(c => c.id === characterSelect.value);
+  if(char){
+    characterImage.src = char.image;
+  } else {
+    characterImage.src = "";
+  }
+}
+updateCharacterImage();
+
+// 選択変更時に更新
+characterSelect.addEventListener("change", updateCharacterImage);
 
 function saveSettings() {
   settings = {
