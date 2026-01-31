@@ -180,7 +180,8 @@ function renderCurrentSettings() {
   const char = CONFIG.characters.find(c => c.id === settings.character);
   document.getElementById("currentSettings").innerHTML = `
     <div>${char ? char.name : "-"} ${settings.chime}</div>
-    <div>${settings.block} ${settings.place}</div>
+    <div>${settings.block} ${settings.room_1000} ${settings.room_100}</div>
+    <div> ${settings.room_10} ${settings.room_1} ${settings.place}</div>
 ` ;
 }
 
