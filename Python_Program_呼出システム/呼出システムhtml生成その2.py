@@ -1,0 +1,316 @@
+import json
+
+# ===============================
+# 設定
+# ===============================
+CONFIG = {
+    "baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio",
+    "characters": [
+        {
+            "id": "11_四国めたん",
+            "name": "11_四国めたん",
+            "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp",
+            "voice": "001_四国めたん（ノーマル）"
+        },
+        {
+            "id": "12_ずんだもん",
+            "name": "12_ずんだもん",
+            "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp",
+            "voice": "001_ずんだもん（ノーマル）"
+        },
+        {
+            "id": "13_春日部つむぎ",
+            "name": "13_春日部つむぎ",
+            "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp",
+            "voice": "001_春日部つむぎ（ノーマル）"
+        }
+    ],
+    "chimes": ["なし","チャイム1","チャイム2","チャイム3"],
+    "prefixes": ["大変お待たせいたしました","お待たせいたしました","お呼び出しいたします","なし"],
+    "honorifics": ["でお待ちの方","の方","なし"],
+    "blocks": ["なし","Aブロック", "Bブロック","Cブロック","Dブロック"],
+    "places": ["窓口までお越しください","受付までお越しください","診察室までお越しください"],
+}
+
+# ===============================
+# select用 option を生成
+# ===============================
+character_options = "".join(
+    f'<option value="{c["id"]}">{c["name"]}</option>'
+    for c in CONFIG["characters"]
+)
+chime_options   = "".join(f"<option>{p}</option>" for p in CONFIG["chimes"])
+prefix_options  = "".join(f"<option>{p}</option>" for p in CONFIG["prefixes"])
+block_options   = "".join(f"<option>{b}</option>" for b in CONFIG["blocks"])
+place_options   = "".join(f"<option>{p}</option>" for p in CONFIG["places"])
+
+# ===============================
+# HTML（f-string禁止）
+# ===============================
+html = """<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>呼出システム</title>
+
+<style>
+body { font-family: system-ui; margin:0; background:#f2f2f7; }
+header { background:#007bff; color:#fff; padding:10px; text-align:center; }
+nav button { margin:4px; padding:6px 12px; }
+.view { display:none; padding:10px; }
+.view.active { display:block; }
+
+.keypad {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  max-width:300px;
+  margin:auto;
+}
+.keypad button {
+  padding:18px;
+  font-size:20px;
+}
+
+#display {
+  text-align:center;
+  font-size:28px;
+  margin:10px;
+}
+
+#currentSettings {
+  text-align:center;
+  font-size:14px;
+  color:#333;
+  margin-bottom:10px;
+}
+
+.history {
+  background:#fff;
+  padding:8px;
+  margin-top:10px;
+  border-radius:6px;
+}
+</style>
+
+<script>
+const CONFIG = __CONFIG__;
+</script>
+</head>
+
+<body>
+
+<header>
+  <h2>呼出システム</h2>
+  <nav>
+    <button onclick="showView('home')">ホーム</button>
+    <button onclick="showView('settings')">設定</button>
+    <button onclick="showView('terms')">利用規約</button>
+  </nav>
+</header>
+
+<div id="home" class="view active">
+  <div id="display">----</div>
+
+  <!-- ★ 設定内容表示 -->
+  <div id="currentSettings">キャラクター：-</div>
+
+  <div class="keypad">
+    <button onclick="addNum(1)">1</button>
+    <button onclick="addNum(2)">2</button>
+    <button onclick="addNum(3)">3</button>
+    <button onclick="addNum(4)">4</button>
+    <button onclick="addNum(5)">5</button>
+    <button onclick="addNum(6)">6</button>
+    <button onclick="addNum(7)">7</button>
+    <button onclick="addNum(8)">8</button>
+    <button onclick="addNum(9)">9</button>
+    <button onclick="clearNum()">C</button>
+    <button onclick="addNum(0)">0</button>
+    <button onclick="backspace()">←</button>
+  </div>
+
+  <p style="text-align:center">
+    <button onclick="callNumber()">▶ 呼出</button>
+  </p>
+
+  <div class="history">
+    <b>呼出履歴（最新10件）</b>
+    <ul id="history"></ul>
+  </div>
+</div>
+
+<div id="settings" class="view">
+  <h3>設定</h3>
+
+  <a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener">
+    <button type="button">キャラクター詳細</button>
+  </a>
+  <br><br>
+
+  <label>キャラクター</label><br>
+  <select id="character">__CHAR_OPTIONS__</select><br><br>
+
+  <label>チャイム</label><br>
+  <select id="chime">__CHIME_OPTIONS__</select><br><br>
+
+  <label>前文</label><br>
+  <select id="prefix">__PREFIX_OPTIONS__</select><br><br>
+
+  <label>ブロック</label><br>
+  <select id="block">__BLOCK_OPTIONS__</select><br><br>
+
+  <label>場所</label><br>
+  <select id="place">__PLACE_OPTIONS__</select><br><br>
+
+  <button onclick="saveSettings()">決定</button>
+</div>
+
+<div id="terms" class="view">
+  <h3>利用規約</h3>
+  <p>本システムは音声案内目的で使用してください。</p>
+</div>
+
+<script>
+let currentNum = "";
+
+let settings = JSON.parse(localStorage.getItem("settings")) || {
+  character: CONFIG.characters[0].id,
+  chime: CONFIG.chimes[0],
+  prefix: CONFIG.prefixes[0],
+  block: CONFIG.blocks[0],
+  place: CONFIG.places[0]
+};
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function addNum(n) {
+  if (currentNum.length >= 4) return;
+  currentNum += n;
+  updateDisplay();
+}
+
+function clearNum() {
+  currentNum = "";
+  updateDisplay();
+}
+
+function backspace() {
+  currentNum = currentNum.slice(0,-1);
+  updateDisplay();
+}
+
+function updateDisplay() {
+  document.getElementById("display").innerText =
+    currentNum.padStart(4,"-");
+}
+
+function renderCurrentSettings() {
+  const char = CONFIG.characters.find(c => c.id === settings.character);
+  document.getElementById("currentSettings").innerHTML = `
+    <div>キャラクター：${char ? char.name : "-"}</div>
+    <div>チャイム：${settings.chime}</div>
+    <div>ブロック：${settings.block}</div>
+    <div>場所：${settings.place}</div>
+  `;
+} 
+
+async function playSequence(list) {
+  for (const src of list) {
+    await new Promise(r => {
+      const a = new Audio(src);
+      a.onended = r;
+      a.play();
+    });
+  }
+}
+
+function numberFiles(num, base) {
+  const s = num.padStart(4,"0");
+  const f = [];
+  if (s[0]!="0") f.push(`${base}/number/${s[0]}000.mp3`);
+  if (s[1]!="0") f.push(`${base}/number/${s[1]}00.mp3`);
+  if (s[2]!="0") f.push(`${base}/number/${s[2]}0.mp3`);
+  if (s[3]!="0") f.push(`${base}/number/${s[3]}.mp3`);
+  return f;
+}
+
+async function callNumber() {
+  if (!currentNum) return alert("番号未入力");
+
+  const base = `${CONFIG.baseAudioUrl}/${settings.character}`;
+  const files = [];
+
+  files.push(`${CONFIG.baseAudioUrl}/chime/${settings.chime}`);
+  files.push(`${base}/prefix/${settings.prefix}.mp3`);
+  files.push(...numberFiles(currentNum, base));
+  files.push(`${base}/honorific/でお待ちの方.mp3`);
+  files.push(`${base}/block/${settings.block}.mp3`);
+  files.push(...numberFiles(currentNum, base));
+  files.push(`${base}/place/${settings.place}.mp3`);
+
+  await playSequence(files);
+  addHistory(currentNum);
+  clearNum();
+}
+
+function addHistory(num) {
+  const h = JSON.parse(localStorage.getItem("history")||"[]");
+  h.unshift({num:num, time:new Date().toLocaleTimeString()});
+  localStorage.setItem("history", JSON.stringify(h.slice(0,10)));
+  renderHistory();
+}
+
+function renderHistory() {
+  const ul = document.getElementById("history");
+  ul.innerHTML="";
+  const h = JSON.parse(localStorage.getItem("history")||"[]");
+  h.forEach(i=>{
+    const li=document.createElement("li");
+    li.textContent = `${i.time} 呼出 ${i.num}`;
+    ul.appendChild(li);
+  });
+}
+
+function saveSettings() {
+  settings = {
+    character: character.value,
+    chime: chime.value,
+    prefix: prefix.value,
+    block: block.value,
+    place: place.value
+  };
+  localStorage.setItem("settings", JSON.stringify(settings));
+  renderCurrentSettings();
+  alert("保存しました");
+}
+
+renderHistory();
+updateDisplay();
+renderCurrentSettings();
+</script>
+
+</body>
+</html>
+"""
+
+# ===============================
+# 埋め込み
+# ===============================
+html = (html
+    .replace("__CONFIG__", json.dumps(CONFIG, ensure_ascii=False))
+    .replace("__CHAR_OPTIONS__", character_options)
+    .replace("__CHIME_OPTIONS__", chime_options)
+    .replace("__PREFIX_OPTIONS__", prefix_options)
+    .replace("__BLOCK_OPTIONS__", block_options)
+    .replace("__PLACE_OPTIONS__", place_options)
+)
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html)
+
+print("index.html を生成しました")
