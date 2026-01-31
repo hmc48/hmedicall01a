@@ -113,16 +113,16 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
   <select id="block"><option>ブロックなし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
 
   <label>部屋番号千の位</label><br>
-  <select id="rooms_1000"><option>ブロックなし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
+  <select id="rooms_1000"><option>なし</option><option>千</option><option>二千</option><option>三千</option><option>四千</option><option>五千</option><option>六千</option><option>七千</option><option>八千</option><option>九千</option></select><br><br>
 
   <label>部屋番号百の位</label><br>
-  <select id="rooms_100"><option>ブロックなし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
+  <select id="rooms_100"><option>なし</option><option>百</option><option>二百</option><option>三百</option><option>四百</option><option>五百</option><option>六百</option><option>七百</option><option>八百</option><option>九百</option></select><br><br>
 
   <label>部屋番号十の位</label><br>
-  <select id="rooms_10"><option>ブロックなし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
+  <select id="rooms_10"><option>なし</option><option>十</option><option>二十</option><option>三十</option><option>四十</option><option>五十</option><option>六十</option><option>七十</option><option>八十</option><option>九十</option></select><br><br>
 
   <label>部屋番号一の位</label><br>
-  <select id="rooms_1"><option>ブロックなし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
+  <select id="rooms_1"><option>なし</option><option>一番</option><option>二番</option><option>三番</option><option>四番</option><option>五番</option><option>六番</option><option>七番</option><option>八番</option><option>九番</option></select><br><br>
 
   <label>場所</label><br>
   <select id="place"><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select><br><br>
@@ -249,6 +249,10 @@ function saveSettings() {
     chime: chime.value,
     prefix: prefix.value,
     block: block.value,
+    block: room_1000.value,
+    block: room_100.value,
+    block: room_10.value,
+    block: room_1.value,
     place: place.value
   };
   localStorage.setItem("settings", JSON.stringify(settings));
