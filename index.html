@@ -30,6 +30,13 @@ nav button { margin:4px; padding:6px 12px; }
   margin:10px;
 }
 
+#currentSettings {
+  text-align:center;
+  font-size:14px;
+  color:#333;
+  margin-bottom:10px;
+}
+
 .history {
   background:#fff;
   padding:8px;
@@ -39,7 +46,7 @@ nav button { margin:4px; padding:6px 12px; }
 </style>
 
 <script>
-const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["チャイム1", "チャイム2", "チャイム3"], "prefixes": ["大変お待たせしました", "お待たせしました", "大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "なし"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"]};
+const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["なし", "チャイム1", "チャイム2", "チャイム3"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "なし"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"]};
 </script>
 </head>
 
@@ -50,12 +57,15 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
   <nav>
     <button onclick="showView('home')">ホーム</button>
     <button onclick="showView('settings')">設定</button>
-<button onclick="showView('terms')">利用規約</button>
+    <button onclick="showView('terms')">利用規約</button>
   </nav>
 </header>
 
 <div id="home" class="view active">
   <div id="display">----</div>
+
+  <!-- ★ 設定内容表示 -->
+  <div id="currentSettings">キャラクター：-</div>
 
   <div class="keypad">
     <button onclick="addNum(1)">1</button>
@@ -84,7 +94,7 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 
 <div id="settings" class="view">
   <h3>設定</h3>
-  <!-- キャラクター詳細リンクボタン -->
+
   <a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener">
     <button type="button">キャラクター詳細</button>
   </a>
@@ -94,10 +104,10 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
   <select id="character"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select><br><br>
 
   <label>チャイム</label><br>
-  <select id="chime"><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option></select><br><br>
+  <select id="chime"><option>なし</option><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option></select><br><br>
 
   <label>前文</label><br>
-  <select id="prefix"><option>大変お待たせしました</option><option>お待たせしました</option><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option><option>なし</option></select><br><br>
+  <select id="prefix"><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option><option>なし</option></select><br><br>
 
   <label>ブロック</label><br>
   <select id="block"><option>なし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
@@ -115,6 +125,7 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 
 <script>
 let currentNum = "";
+
 let settings = JSON.parse(localStorage.getItem("settings")) || {
   character: CONFIG.characters[0].id,
   chime: CONFIG.chimes[0],
@@ -149,6 +160,12 @@ function updateDisplay() {
     currentNum.padStart(4,"-");
 }
 
+function renderCurrentSettings() {
+  const char = CONFIG.characters.find(c => c.id === settings.character);
+  document.getElementById("currentSettings").innerText =
+    `キャラクター：${char ? char.name : "-"}`;
+}
+
 async function playSequence(list) {
   for (const src of list) {
     await new Promise(r => {
@@ -175,7 +192,7 @@ async function callNumber() {
   const base = `${CONFIG.baseAudioUrl}/${settings.character}`;
   const files = [];
 
-  files.push(`${CONFIG.baseAudioUrl}/chime/${CONFIG.chimes[0]}`);
+  files.push(`${CONFIG.baseAudioUrl}/chime/${settings.chime}`);
   files.push(`${base}/prefix/${settings.prefix}.mp3`);
   files.push(...numberFiles(currentNum, base));
   files.push(`${base}/honorific/でお待ちの方.mp3`);
@@ -215,11 +232,13 @@ function saveSettings() {
     place: place.value
   };
   localStorage.setItem("settings", JSON.stringify(settings));
+  renderCurrentSettings();
   alert("保存しました");
 }
 
 renderHistory();
 updateDisplay();
+renderCurrentSettings();
 </script>
 
 </body>
