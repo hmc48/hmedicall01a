@@ -46,7 +46,7 @@ nav button { margin:4px; padding:6px 12px; }
 </style>
 
 <script>
-const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["＿", "チャイム1", "チャイム2", "チャイム3"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "＿"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["＿", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "rooms_1000": ["＿", "千", "二千", "三千", "四千", "五千", "六千", "七千", "八千", "九千"], "rooms_100": ["＿", "百", "二百", "三百", "四百", "五百", "六百", "七百", "八百", "九百"], "rooms_10": ["＿", "十", "二十", "三十", "四十", "五十", "六十", "七十", "八十", "九十"], "rooms_1": ["＿", "一番", "二番", "三番", "四番", "五番", "六番", "七番", "八番", "九番"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"]};
+const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["＿", "チャイム1", "チャイム2", "チャイム3"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "＿"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["＿", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "rooms_1000": ["＿", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_100": ["＿", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_10": ["＿", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_1": ["＿", "1番", "2番", "3番", "4番", "5番", "6番", "7番", "8番", "9番"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"]};
 </script>
 </head>
 
@@ -113,16 +113,16 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
   <select id="block"><option>＿</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
 
   <label>部屋番号千の位</label><br>
-  <select id="rooms_1000"><option>＿</option><option>千</option><option>二千</option><option>三千</option><option>四千</option><option>五千</option><option>六千</option><option>七千</option><option>八千</option><option>九千</option></select><br><br>
+  <select id="rooms_1000"><option>＿</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select><br><br>
 
   <label>部屋番号百の位</label><br>
-  <select id="rooms_100"><option>＿</option><option>百</option><option>二百</option><option>三百</option><option>四百</option><option>五百</option><option>六百</option><option>七百</option><option>八百</option><option>九百</option></select><br><br>
+  <select id="rooms_100"><option>＿</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select><br><br>
 
   <label>部屋番号十の位</label><br>
-  <select id="rooms_10"><option>＿</option><option>十</option><option>二十</option><option>三十</option><option>四十</option><option>五十</option><option>六十</option><option>七十</option><option>八十</option><option>九十</option></select><br><br>
+  <select id="rooms_10"><option>＿</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select><br><br>
 
   <label>部屋番号一の位</label><br>
-  <select id="rooms_1"><option>＿</option><option>一番</option><option>二番</option><option>三番</option><option>四番</option><option>五番</option><option>六番</option><option>七番</option><option>八番</option><option>九番</option></select><br><br>
+  <select id="rooms_1"><option>＿</option><option>1番</option><option>2番</option><option>3番</option><option>4番</option><option>5番</option><option>6番</option><option>7番</option><option>8番</option><option>9番</option></select><br><br>
 
   <label>場所</label><br>
   <select id="place"><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select><br><br>
