@@ -297,9 +297,9 @@ function saveSettings() {
     room_100: rooms_100.value,
     room_10: rooms_10.value,
     room_1: rooms_1.value,
-    place: place.value,
-    updateHomeCharacterImage(); // ホーム画面の画像も更新
+    place: place.value
   };
+  updateHomeCharacterImage(); // ホーム画面の画像も更新
   localStorage.setItem("settings", JSON.stringify(settings));
   renderCurrentSettings();
   alert("保存しました");
