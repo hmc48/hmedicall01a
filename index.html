@@ -164,6 +164,9 @@ function renderCurrentSettings() {
   const char = CONFIG.characters.find(c => c.id === settings.character);
   document.getElementById("currentSettings").innerText =
     `キャラクター：${char ? char.name : "-"}`;
+     ／ ブロック：${settings.block}
+     ／ 場所：${settings.place}`;
+
 }
 
 async function playSequence(list) {
