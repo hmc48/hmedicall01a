@@ -46,7 +46,7 @@ nav button { margin:4px; padding:6px 12px; }
 </style>
 
 <script>
-const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["なし", "チャイム1", "チャイム2", "チャイム3"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "なし"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"]};
+const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["チャイムなし", "チャイム1", "チャイム2", "チャイム3"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "なし"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["ブロックなし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"]};
 </script>
 </head>
 
@@ -104,13 +104,13 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
   <select id="character"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select><br><br>
 
   <label>チャイム</label><br>
-  <select id="chime"><option>なし</option><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option></select><br><br>
+  <select id="chime"><option>チャイムなし</option><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option></select><br><br>
 
   <label>前文</label><br>
   <select id="prefix"><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option><option>なし</option></select><br><br>
 
   <label>ブロック</label><br>
-  <select id="block"><option>なし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
+  <select id="block"><option>ブロックなし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select><br><br>
 
   <label>場所</label><br>
   <select id="place"><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select><br><br>
@@ -163,12 +163,12 @@ function updateDisplay() {
 function renderCurrentSettings() {
   const char = CONFIG.characters.find(c => c.id === settings.character);
   document.getElementById("currentSettings").innerHTML = `
-    <div>キャラクター：${char ? char.name : "-"}</div>
-    <div>${settings.chime}</div>
-    <div>${settings.block}</div>
-    <div>${settings.place}</div>
-  `;
-} 
+    <div>キャラクター：${char ? char.name : "-"}　／　チャイム：${settings.chime}</div>
+    <div>ブロック：${settings.block}　／　場所：${settings.place}</div>
+` ;
+}
+
+
 
 async function playSequence(list) {
   for (const src of list) {
