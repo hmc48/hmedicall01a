@@ -114,8 +114,8 @@ function updateUI() {
     if (settings.prefix && settings.prefix !== "なし") {
       displayParts.push(` ${settings.prefix}`);
     }
-    if (settings.room_1 && settings.room_1 !== "なし") {
-      displayParts.push(` ${settings.room_1}`);
+    if (settings.honorific && settings.honorific !== "なし") {
+      displayParts.push(` ${settings.honorific}`);
     }
     if (settings.room_1000 && settings.room_1000 !== "なし") {
       displayParts.push(` ${settings.room_1000}`);
@@ -126,11 +126,10 @@ function updateUI() {
     if (settings.room_10 && settings.room_10 !== "なし") {
       displayParts.push(` ${settings.room_10}`);
     }
-    if (settings.honorific && settings.honorific !== "なし") {
-      displayParts.push(` ${settings.honorific}`);
+    if (settings.room_1 && settings.room_1 !== "なし") {
+      displayParts.push(` ${settings.room_1}`);
     }
-
-        if (settings.place) {
+    if (settings.place) {
       displayParts.push(` ${settings.place}`);
     }
 
