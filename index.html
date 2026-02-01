@@ -294,7 +294,7 @@ async function call() {
 }
 
 function renderHistory() {
-  historyList.innerHTML = "<h4>履歴</h4>" + history.map(h => `<div class="history">${h.time} - ${h.num}番</div>`).join("");
+  historyList.innerHTML = "<h4>履歴(Max10件)</h4>" + history.map(h => `<div class="history">${h.time} - ${h.num}番</div>`).join("");
 }
 </script>
 </body>
