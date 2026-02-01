@@ -205,6 +205,29 @@ async function call() {
   if(settings.prefix && settings.prefix !== "なし") {
     playlist.push(`${baseUrl}/${cid}/03_1_お待たせ/${v}_${settings.prefix}.mp3`);
   }
+  // ===== 電卓入力の番号音声（roomとは独立）=====
+  if (currentNum) {
+    const num = currentNum.padStart(4, "0"); // 例: "23" → "0023"
+
+    const n1000 = num[0];
+    const n100  = num[1];
+    const n10   = num[2];
+    const n1    = num[3];
+
+    if (n1000 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/04_1_1000番台/${v}_${n1000}000.mp3`);
+    }
+    if (n100 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/04_2_100番台/${v}_${n100}00.mp3`);
+    }
+    if (n10 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/04_3_10番台/${v}_${n10}0.mp3`);
+    }
+    if (n1 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${n1}番.mp3`);
+    }
+  }
+
   // 4. 敬称 (方 -> かた 変換対応)
   if(settings.honorific && settings.honorific !== "なし") {
     const hName = settings.honorific.replace("方", "かた");
