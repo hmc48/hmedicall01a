@@ -31,7 +31,7 @@ nav button { margin:4px; padding:6px 12px; }
   <nav>
     <button onclick="showView('home')">ホーム</button>
     <button onclick="showView('settings')">設定</button>
-    <button onclick="showView('terms')">利用規約</button>
+    <button onclick="showView('terms')">説明・利用規約</button>
   </nav>
 </header>
 
@@ -219,17 +219,17 @@ async function call() {
     const cid = char.id;
     const playlist = [];
 
-    // ===== ① チャイム =====
+    // =====チャイム =====
     if(settings.chime && settings.chime !== "なし") {
       playlist.push(`${baseUrl}/チャイム音/${settings.chime}.mp3`);
     }
 
-    // ===== ② 接頭語 =====
+    // =====お待たせ=====
     if(settings.prefix && settings.prefix !== "なし") {
       playlist.push(`${baseUrl}/${cid}/03_1_お待たせ/${v}_${settings.prefix}.mp3`);
     }
 
-    // ===== ⑥ 電卓入力の番号 =====
+    // ===== 電卓入力の番号 =====
     if (currentNum) {
       const num = currentNum.padStart(4, "0");
       const n1000 = num[0];
@@ -251,18 +251,18 @@ async function call() {
       }
     }
 
-    // ===== ③ 敬称 =====
+    // =====でお待ちの方=====
     if(settings.honorific && settings.honorific !== "なし") {
       const hName = settings.honorific.replace("方", "かた");
       playlist.push(`${baseUrl}/${cid}/05_1_お待ちの方/${v}_${hName}.mp3`);
     }
 
-    // ===== ④ ブロック =====
+    // =====ブロック=====
     if(settings.block && settings.block !== "なし") {
       playlist.push(`${baseUrl}/${cid}/06_1_ブロック番号/${v}_${settings.block}.mp3`);
     }
 
-    // ===== ⑤ room 番号（既存ロジック・変更なし）=====
+    // =====room 番号=====
     if(settings.room_1000 && settings.room_1000 !== "なし") {
       playlist.push(`${baseUrl}/${cid}/04_1_1000番台/${v}_${settings.room_1000}000.mp3`);
     }
@@ -276,8 +276,7 @@ async function call() {
       playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${settings.room_1}.mp3`);
     }
 
-
-    // ===== ⑦ 呼出場所 =====
+    // =====呼出場所 =====
     if(settings.place) {
       playlist.push(`${baseUrl}/${cid}/08_1_呼出場所/${v}_${settings.place}.mp3`);
     }
