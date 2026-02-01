@@ -103,12 +103,22 @@ function updateUI() {
   if(char) {
     document.getElementById("headerCharacterImage").src = char.image;
     document.getElementById("headerImageCredit").src = char.image_credit;
-    
-    // 接頭語が設定されている（かつ空や"＿"でない）場合に表示するテキストを作成
-    const prefixText = (settings.prefix && settings.prefix !== "＿") ? ` / 接頭語：${settings.prefix}` : "";
-    
-    // 画面上のテキストを更新
-    document.getElementById("currentSettings").innerText = `キャラクター：${char.name}${prefixText}`;
+
+    // 表示したい項目を配列にまとめる
+    const displayParts = [`キャラクター：${char.name}`];
+
+    if (settings.prefix && settings.prefix !== "＿") {
+      displayParts.push(`接頭語：${settings.prefix}`);
+    }
+    if (settings.honorific && settings.honorific !== "なし") {
+      displayParts.push(`敬称：${settings.honorific}`);
+    }
+    if (settings.place) {
+      displayParts.push(`場所：${settings.place}`);
+    }
+
+    // 配列の中身を「 / 」でつなげて表示
+    document.getElementById("currentSettings").innerText = displayParts.join(" / ");
   }
 }
 
