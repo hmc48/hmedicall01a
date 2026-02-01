@@ -10,35 +10,34 @@ header { background:#007bff; color:#fff; padding:10px; text-align:center; positi
 header h2 { margin:0; font-size: 20px; }
 nav { margin-top: 10px; }
 nav button { margin:0 4px; padding:6px 16px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: white; cursor: pointer; }
-nav button:hover { background: rgba(255,255,255,0.3); }
 
 .view { display:none; padding:20px; max-width: 600px; margin: auto; }
 .view.active { display:block; }
 
 .keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:320px; margin:20px auto; }
-.keypad button { padding:20px; font-size:24px; border-radius: 12px; border: 1px solid #ccc; background: #fff; cursor: pointer; transition: background 0.1s; }
-.keypad button:active { background: #e5e5ea; }
+.keypad button { padding:20px; font-size:24px; border-radius: 12px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
 
-#display { text-align:center; font-size:48px; font-weight: bold; margin:20px; letter-spacing: 4px; color: #007bff; }
-#currentSettings { text-align:center; font-size:14px; color:#666; margin-bottom:10px; min-height: 1.5em; }
+#display { text-align:center; font-size:48px; font-weight: bold; margin:20px; color: #007bff; }
+#currentSettings { text-align:center; font-size:14px; color:#666; margin-bottom:10px; }
+#statusMsg { text-align:center; font-size:12px; color:red; min-height: 1.5em; margin-bottom: 5px; }
 
 .history-container { margin-top: 30px; border-top: 1px solid #d1d1d6; padding-top: 10px; }
-.history { background:#fff; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+.history { background:#fff; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; display: flex; justify-content: space-between; }
 
 #headerCharacterImage { position:absolute; bottom:5px; left:10px; height:70px; }
-#headerImageCredit { position:absolute; top:5px; right:10px; height:25px; opacity: 0.8; }
+#headerImageCredit { position:absolute; top:5px; right:10px; height:25px; }
 
 #callButton { 
     padding: 20px; width: 100%; max-width: 320px; font-size: 24px; font-weight: bold; 
     border-radius: 16px; background-color: #28a745; color: white; border: none; 
-    cursor: pointer; display: block; margin: 20px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer; display: block; margin: 20px auto;
 }
-#callButton:active { background-color: #1e7e34; transform: translateY(2px); box-shadow: none; }
+#callButton:disabled { background-color: #ccc; cursor: not-allowed; }
 
 .settings-group { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
 .settings-group p { margin: 10px 0; display: flex; justify-content: space-between; align-items: center; }
-select { padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; min-width: 150px; }
-.save-btn { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+select { padding: 8px; border-radius: 6px; border: 1px solid #ccc; min-width: 150px; }
+.save-btn { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -50,13 +49,13 @@ select { padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14
   <nav>
     <button onclick="showView('home')">ホーム</button>
     <button onclick="showView('settings')">設定</button>
-    <button onclick="showView('terms')">利用規約</button>
   </nav>
 </header>
 
 <div id="home" class="view active">
   <div id="display">----</div>
   <div id="currentSettings">読み込み中...</div>
+  <div id="statusMsg"></div>
   <div class="keypad">
     <button onclick="addNum(1)">1</button><button onclick="addNum(2)">2</button><button onclick="addNum(3)">3</button>
     <button onclick="addNum(4)">4</button><button onclick="addNum(5)">5</button><button onclick="addNum(6)">6</button>
@@ -68,35 +67,24 @@ select { padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14
 </div>
 
 <div id="settings" class="view">
-  <h3>システム設定</h3>
+  <h3>設定</h3>
   <div class="settings-group">
     <p>キャラクター <select id="characterSelect"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select></p>
     <p>チャイム音 <select id="chime"><option>なし</option><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option><option>チャイム4</option><option>チャイム5</option><option>チャイム6</option></select></p>
     <p>接頭語 <select id="prefix"><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option><option>＿</option></select></p>
     <p>敬称 <select id="honorific"><option>でお待ちの方</option><option>の方</option><option>なし</option></select></p>
   </div>
-  
   <div class="settings-group">
-    <p><strong>室番号構成</strong></p>
     <p>1000の位 <select id="rooms_1000"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
     <p>100の位 <select id="rooms_100"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
     <p>10の位 <select id="rooms_10"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
     <p>1の位 <select id="rooms_1"><option>なし</option><option>1番</option><option>2番</option><option>3番</option><option>4番</option><option>5番</option><option>6番</option><option>7番</option><option>8番</option><option>9番</option></select></p>
   </div>
-
   <div class="settings-group">
     <p>ブロック <select id="block"><option>なし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select></p>
-    <p>呼出場所 <select id="place"><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select></p>
+    <p>場所 <select id="place"><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select></p>
   </div>
-  
   <button class="save-btn" onclick="saveSettings()">設定を保存</button>
-</div>
-
-<div id="terms" class="view">
-  <h3>利用規約</h3>
-  <p>1. 本システムは音声合成（VOICEVOX等）を利用した案内呼出システムです。</p>
-  <p>2. 音声データの取得にはインターネット接続が必要です。</p>
-  <p>3. ブラウザのキャッシュ機能を利用して設定を保存します。</p>
 </div>
 
 <script>
@@ -105,26 +93,18 @@ let currentNum = "";
 let history = JSON.parse(localStorage.getItem("history") || "[]");
 let settings = JSON.parse(localStorage.getItem("settings") || '{}');
 
-// 要素の取得
 const display = document.getElementById("display");
-const historyList = document.getElementById("historyList");
-const characterSelect = document.getElementById("characterSelect");
+const statusMsg = document.getElementById("statusMsg");
+const callBtn = document.getElementById("callButton");
 
-// 初期表示
-window.onload = () => {
-  loadFormValues();
-  updateUI();
-  renderHistory();
-};
+window.onload = () => { loadFormValues(); updateUI(); renderHistory(); };
 
 function showView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-function addNum(n) { 
-  if(currentNum.length < 4) { currentNum += n; updateDisplay(); }
-}
+function addNum(n) { if(currentNum.length < 4) currentNum += n; updateDisplay(); }
 function clearDisplay() { currentNum = ""; updateDisplay(); }
 function backspace() { currentNum = currentNum.slice(0,-1); updateDisplay(); }
 function updateDisplay() { display.innerText = currentNum || "----"; }
@@ -134,18 +114,13 @@ function updateUI() {
   if(char) {
     document.getElementById("headerCharacterImage").src = char.image;
     document.getElementById("headerImageCredit").src = char.image_credit;
-
-    const displayParts = [`キャラ: ${char.name.split('_')[1]}`];
-    if (settings.chime && settings.chime !== "なし") displayParts.push(settings.chime);
-    if (settings.block && settings.block !== "なし") displayParts.push(settings.block);
-    
-    document.getElementById("currentSettings").innerText = displayParts.join(" | ");
+    document.getElementById("currentSettings").innerText = `キャラ: ${char.name.split('_')[1]} | チャイム: ${settings.chime || 'なし'}`;
   }
 }
 
 function saveSettings() {
   settings = {
-    character: characterSelect.value,
+    character: document.getElementById("characterSelect").value,
     chime: document.getElementById("chime").value,
     prefix: document.getElementById("prefix").value,
     honorific: document.getElementById("honorific").value,
@@ -158,12 +133,12 @@ function saveSettings() {
   };
   localStorage.setItem("settings", JSON.stringify(settings));
   updateUI();
-  alert("設定を保存しました");
+  alert("保存しました");
 }
 
 function loadFormValues() {
   if(!settings.character) return;
-  characterSelect.value = settings.character;
+  document.getElementById("characterSelect").value = settings.character;
   document.getElementById("chime").value = settings.chime;
   document.getElementById("prefix").value = settings.prefix;
   document.getElementById("honorific").value = settings.honorific;
@@ -175,30 +150,38 @@ function loadFormValues() {
   document.getElementById("place").value = settings.place;
 }
 
+/**
+ * 音声を再生し、終了するまで待機するPromise
+ */
 function playAudio(url) {
   return new Promise((resolve) => {
+    console.log("Playing:", url);
+    statusMsg.innerText = "再生中: " + url.split('/').pop();
     const audio = new Audio(url);
-    audio.onended = resolve;
-    audio.onerror = (e) => { 
-        console.error("再生失敗:", url); 
-        resolve(); 
+    
+    audio.onended = () => {
+      statusMsg.innerText = "";
+      resolve();
     };
-    audio.play().catch(e => {
-        console.warn("再生がブロックされました:", e);
-        resolve();
+
+    audio.onerror = () => {
+      console.error("再生エラー:", url);
+      statusMsg.innerText = "エラー: " + url.split('/').pop();
+      setTimeout(() => { statusMsg.innerText = ""; resolve(); }, 500); // エラーでも次へ進む
+    };
+
+    audio.play().catch(err => {
+      console.warn("再生ブロック:", err);
+      // ブラウザによりブロックされた場合は手動で次へ進むか、ユーザーに通知が必要
+      statusMsg.innerText = "再生がブロックされました。画面をクリックしてください。";
+      resolve();
     });
   });
 }
 
 async function call() {
-  const callNum = currentNum || "0";
-  const now = new Date().toLocaleTimeString('ja-JP', {hour: '2-digit', minute:'2-digit'});
-  
-  // 履歴に追加
-  history.unshift({ num: callNum, time: now });
-  if(history.length > 5) history.pop();
-  localStorage.setItem("history", JSON.stringify(history));
-  renderHistory();
+  if(callBtn.disabled) return;
+  callBtn.disabled = True; // 二重押し防止
 
   const char = CONFIG.characters.find(c => c.id === (settings.character || CONFIG.characters[0].id));
   const baseUrl = CONFIG.baseAudioUrl;
@@ -206,59 +189,40 @@ async function call() {
   const cid = char.id;
   const playlist = [];
 
-  // 1. チャイム
-  if(settings.chime && settings.chime !== "なし") {
-    playlist.push(`${baseUrl}/チャイム音/${settings.chime}.mp3`);
-  }
-  // 2. 接頭語
-  if(settings.prefix && settings.prefix !== "なし") {
-    playlist.push(`${baseUrl}/${cid}/03_1_お待たせ/${v}_${settings.prefix}.mp3`);
-  }
-  // 3. 室番号
+  // リスト作成
+  if(settings.chime && settings.chime !== "なし") playlist.push(`${baseUrl}/チャイム音/${settings.chime}.mp3`);
+  if(settings.prefix && settings.prefix !== "なし") playlist.push(`${baseUrl}/${cid}/03_1_お待たせ/${v}_${settings.prefix}.mp3`);
   if(settings.room_1000 && settings.room_1000 !== "なし") playlist.push(`${baseUrl}/${cid}/04_1_1000番台/${v}_${settings.room_1000}000.mp3`);
   if(settings.room_100 && settings.room_100 !== "なし") playlist.push(`${baseUrl}/${cid}/04_2_100番台/${v}_${settings.room_100}00.mp3`);
   if(settings.room_10 && settings.room_10 !== "なし") playlist.push(`${baseUrl}/${cid}/04_3_10番台/${v}_${settings.room_10}0.mp3`);
   if(settings.room_1 && settings.room_1 !== "なし") playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${settings.room_1}.mp3`);
+  if(settings.honorific && settings.honorific !== "なし") playlist.push(`${baseUrl}/${cid}/05_1_お待ちの方/${v}_${settings.honorific.replace("方", "かた")}.mp3`);
+  if(settings.block && settings.block !== "なし") playlist.push(`${baseUrl}/${cid}/06_1_ブロック番号/${v}_${settings.block}.mp3`);
+  if(settings.place) playlist.push(`${baseUrl}/${cid}/08_1_呼出場所/${v}_${settings.place}.mp3`);
 
-  // 4. 敬称
-  if(settings.honorific && settings.honorific !== "なし") {
-    const hName = settings.honorific.replace("方", "かた");
-    playlist.push(`${baseUrl}/${cid}/05_1_お待ちの方/${v}_${hName}.mp3`);
-  }
-  // 5. ブロック
-  if(settings.block && settings.block !== "なし") {
-    playlist.push(`${baseUrl}/${cid}/06_1_ブロック番号/${v}_${settings.block}.mp3`);
-  }
-  // 6. 呼出場所
-  if(settings.place) {
-    playlist.push(`${baseUrl}/${cid}/08_1_呼出場所/${v}_${settings.place}.mp3`);
-  }
-
-  // --- ポップアップで結合ファイル名を表示 ---
-  if (playlist.length > 0) {
-    const fileListStr = playlist.map(url => {
-        const parts = url.split('/');
-        return parts[parts.length - 1]; // ファイル名のみ抽出
-    }).join('\n');
-    
-    alert("以下の順序で音声を結合・再生します:\n\n" + fileListStr);
-  }
-  // ----------------------------------------
+  // ポップアップ表示（確認用）
+  const fileNames = playlist.map(url => url.split('/').pop()).join('\n');
+  alert("以下の順序で再生を開始します：\n" + fileNames);
 
   // 順次再生
-  for(const url of playlist) { 
-    await playAudio(url); 
+  for(const url of playlist) {
+    await playAudio(url);
   }
+
+  // 履歴更新
+  const now = new Date().toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'});
+  history.unshift({ num: currentNum || "0", time: now });
+  if(history.length > 5) history.pop();
+  localStorage.setItem("history", JSON.stringify(history));
+  renderHistory();
+  
+  callBtn.disabled = False;
 }
 
 function renderHistory() {
-  historyList.innerHTML = "<h4>最近の呼出履歴</h4>" + 
-    history.map(h => `
-      <div class="history">
-        <span style="font-weight:bold; font-size:18px;">${h.num} 番</span>
-        <span style="color:#8e8e93;">${h.time}</span>
-      </div>
-    `).join("");
+  historyList.innerHTML = "<h4>最近の履歴</h4>" + history.map(h => `
+    <div class="history"><strong>${h.num} 番</strong><span>${h.time}</span></div>
+  `).join("");
 }
 </script>
 </body>
