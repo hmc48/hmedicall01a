@@ -55,7 +55,7 @@ nav button { margin:4px; padding:6px 12px; }
   <p>接頭語: <select id="prefix"><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option><option>＿</option></select></p>
   <p>敬称: <select id="honorific"><option>でお待ちの方</option><option>の方</option><option>なし</option></select></p>
   <hr>
-  <p>【テスト用固定番号設定】</p>
+  <p>【室番号】</p>
   <p>1000の位: <select id="rooms_1000"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
   <p>100の位: <select id="rooms_100"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
   <p>10の位: <select id="rooms_10"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
@@ -103,6 +103,7 @@ function updateUI() {
   if(char) {
     document.getElementById("headerCharacterImage").src = char.image;
     document.getElementById("headerImageCredit").src = char.image_credit;
+    document.getElementById("currentSettings").innerText = `キャラクター2：${prefix.name}`;
     document.getElementById("currentSettings").innerText = `キャラクター：${char.name}`;
   }
 }
