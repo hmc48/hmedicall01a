@@ -297,7 +297,7 @@ function updateCharacterImage() {
   if (char) {
     characterImage.src = char.image;
     characterImageCredit.src = char.image_credit || "";
-    characterImageCredit.style.display = char.image_credit ? "block" : "none";
+    characterImageCredit.style.display = char.image_credit ? "inline-block" : "none";
   } else {
     characterImage.src = "";
     characterImageCredit.src = "";
