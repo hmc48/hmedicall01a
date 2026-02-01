@@ -107,6 +107,10 @@ function updateUI() {
     // 表示したい項目を配列にまとめる
     const displayParts = [` ${char.name}`];
 
+    if (settings.chime && settings.chime !== "＿") {
+      displayParts.push(` ${settings.chimes}`);
+    }
+
     if (settings.prefix && settings.prefix !== "＿") {
       displayParts.push(` ${settings.prefix}`);
     }
