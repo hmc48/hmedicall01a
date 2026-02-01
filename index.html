@@ -103,8 +103,12 @@ function updateUI() {
   if(char) {
     document.getElementById("headerCharacterImage").src = char.image;
     document.getElementById("headerImageCredit").src = char.image_credit;
-    document.getElementById("currentSettings").innerText = `キャラクター2：${prefix.name}`;
-    document.getElementById("currentSettings").innerText = `キャラクター：${char.name}`;
+    
+    // 接頭語が設定されている（かつ空や"＿"でない）場合に表示するテキストを作成
+    const prefixText = (settings.prefix && settings.prefix !== "＿") ? ` / 接頭語：${settings.prefix}` : "";
+    
+    // 画面上のテキストを更新
+    document.getElementById("currentSettings").innerText = `キャラクター：${char.name}${prefixText}`;
   }
 }
 
