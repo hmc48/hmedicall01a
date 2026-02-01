@@ -52,6 +52,31 @@ nav button { margin:4px; padding:6px 12px; }
 #headerImageCredit {
   position:absolute; top:10px; right:10px; height:30px;
 }
+
+/* キャラクター画像・クレジット位置 */
+#headerCharacterImage {
+  position:absolute; top:10px; left:10px; height:80px;
+}
+#headerImageCredit {
+  position:absolute; top:10px; right:10px; height:30px;
+}
+
+/* 呼出ボタン専用スタイル */
+#callButton {
+  padding: 20px 50px;       /* ボタンの縦横サイズを大きく */
+  font-size: 24px;           /* 文字サイズを大きく */
+  font-weight: bold;         /* 太字に */
+  border-radius: 12px;       /* 角丸 */
+  background-color: #28a745; /* 緑色背景 */
+  color: white;              /* 文字色 */
+  border: none;              /* 枠線を消す */
+  cursor: pointer;           /* マウスオーバーでカーソル変更 */
+}
+
+#callButton:hover {
+  background-color: #218838;
+}
+
 </style>
 
 <script>
@@ -95,7 +120,7 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
   </div>
 
   <p style="text-align:center">
-    <button onclick="callNumber()">▶ 呼出</button>
+    <button id="callButton" onclick="callNumber()">▶ 呼出</button>
   </p>
 
   <div class="history">
