@@ -108,7 +108,7 @@ function updateUI() {
     const displayParts = [` ${char.name}`];
 
     if (settings.chime && settings.chime !== "＿") {
-      displayParts.push(` ${settings.chimes}`);
+      displayParts.push(` ${settings.chime}`);
     }
 
     if (settings.prefix && settings.prefix !== "＿") {
@@ -116,6 +116,18 @@ function updateUI() {
     }
     if (settings.honorific && settings.honorific !== "なし") {
       displayParts.push(` ${settings.honorific}`);
+    }
+    if (settings.room_1000 && settings.room_1000 !== "なし") {
+      displayParts.push(` ${settings.room_1000}`);
+    }
+    if (settings.room_100 && settings.room_100 !== "なし") {
+      displayParts.push(` ${settings.room_100}`);
+    }
+    if (settings.room_10 && settings.room_10 !== "なし") {
+      displayParts.push(` ${settings.room_10}`);
+    }
+    if (settings.room_1 && settings.room_1 !== "なし") {
+      displayParts.push(` ${settings.room_1}`);
     }
     if (settings.place) {
       displayParts.push(` ${settings.place}`);
