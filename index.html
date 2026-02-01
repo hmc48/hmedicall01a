@@ -114,9 +114,6 @@ function updateUI() {
     if (settings.prefix && settings.prefix !== "＿") {
       displayParts.push(` ${settings.prefix}`);
     }
-    if (settings.honorific && settings.honorific !== "なし") {
-      displayParts.push(` ${settings.honorific}`);
-    }
     if (settings.room_1000 && settings.room_1000 !== "なし") {
       displayParts.push(` ${settings.room_1000}`);
     }
@@ -129,12 +126,16 @@ function updateUI() {
     if (settings.room_1 && settings.room_1 !== "なし") {
       displayParts.push(` ${settings.room_1}`);
     }
-    if (settings.place) {
+    if (settings.honorific && settings.honorific !== "なし") {
+      displayParts.push(` ${settings.honorific}`);
+    }
+
+        if (settings.place) {
       displayParts.push(` ${settings.place}`);
     }
 
-    // 配列の中身を「 / 」でつなげて表示
-    document.getElementById("currentSettings").innerText = displayParts.join(" / ");
+    // 配列の中身を「_」でつなげて表示
+    document.getElementById("currentSettings").innerText = displayParts.join("_");
   }
 }
 
