@@ -7,7 +7,8 @@
 
 <style>
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
-header { background:#007bff; color:#fff; padding:10px; text-align:center; }
+header { background:#007bff; color:#fff; padding:10px; text-align:center; position:relative; }
+header h2 { margin:0; }
 nav button { margin:4px; padding:6px 12px; }
 .view { display:none; padding:10px; }
 .view.active { display:block; }
@@ -43,6 +44,14 @@ nav button { margin:4px; padding:6px 12px; }
   margin-top:10px;
   border-radius:6px;
 }
+
+/* キャラクター画像・クレジット位置 */
+#headerCharacterImage {
+  position:absolute; top:10px; left:10px; height:80px;
+}
+#headerImageCredit {
+  position:absolute; top:90px; left:10px; height:30px;
+}
 </style>
 
 <script>
@@ -53,6 +62,9 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 <body>
 
 <header>
+  <img id="headerCharacterImage" src="" alt="キャラクター画像">
+  <img id="headerImageCredit" src="" alt="クレジット画像">
+
   <h2>呼出システム</h2>
   <nav>
     <button onclick="showView('home')">ホーム</button>
@@ -62,14 +74,6 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 </header>
 
 <div id="home" class="view active">
-  <img id="homeCharacterImage" src="" alt="キャラクター画像"
-       style="position:absolute; top:10px; right:10px; height:80px;">
-
-  <img id="homeImageCredit"
-       src=""
-       alt="クレジット画像"
-       style="position:absolute; top:10px; right:100px; height:30px;">
-              
   <div id="display">----</div>
 
   <!-- ★ 設定内容表示 -->
@@ -105,7 +109,6 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 
   <a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener">
     <button type="button">キャラクター詳細</button>
-
   </a>
   <br><br>
 
@@ -198,10 +201,8 @@ function renderCurrentSettings() {
   document.getElementById("currentSettings").innerHTML = `
     <div>${char ? char.name : "-"} ${settings.chime} ${settings.block}</div>
     <div>${settings.room_1000}${settings.room_100}${settings.room_10}${settings.room_1} ${settings.place}</div>
-` ;
+  `;
 }
-
-
 
 async function playSequence(list) {
   for (const src of list) {
@@ -260,38 +261,16 @@ function renderHistory() {
   });
 }
 
+// 設定画面用
 const characterSelect = document.getElementById("character");
 const characterImage  = document.getElementById("characterImage");
-
-const homeImageCredit = document.getElementById("homeImageCredit");
 const characterImageCredit = document.getElementById("characterImageCredit");
 
-const homeCharacterImage = document.getElementById("homeCharacterImage");
+// header 共通
+const headerCharacterImage = document.getElementById("headerCharacterImage");
+const headerImageCredit    = document.getElementById("headerImageCredit");
 
-// ホーム画面の画像を更新する関数
-function updateHomeCharacterImage() {
-  const char = CONFIG.characters.find(c => c.id === settings.character);
-  if (char) {
-    homeCharacterImage.src = char.image;
-    homeImageCredit.src = char.image_credit || "";
-    homeImageCredit.style.display = char.image_credit ? "block" : "none";
-  } else {
-    homeCharacterImage.src = "";
-    homeImageCredit.src = "";
-    homeImageCredit.style.display = "none";
-  }
-}
-
-// 設定画面のキャラクター変更時にホーム画面も更新
-characterSelect.addEventListener("change", () => {
-  updateCharacterImage();      // 設定画面用
-  updateHomeCharacterImage();  // ホーム画面用
-});
-
-// 初期表示
-updateHomeCharacterImage();
-
-// 初期表示
+// キャラクター画像更新（設定画面用）
 function updateCharacterImage() {
   const char = CONFIG.characters.find(c => c.id === characterSelect.value);
   if (char) {
@@ -304,10 +283,30 @@ function updateCharacterImage() {
     characterImageCredit.style.display = "none";
   }
 }
-updateCharacterImage();
 
-// 選択変更時に更新
-characterSelect.addEventListener("change", updateCharacterImage);
+// header画像更新（全画面共通）
+function updateHeaderCharacterImage() {
+  const char = CONFIG.characters.find(c => c.id === settings.character);
+  if (char) {
+    headerCharacterImage.src = char.image;
+    headerImageCredit.src = char.image_credit || "";
+    headerImageCredit.style.display = char.image_credit ? "block" : "none";
+  } else {
+    headerCharacterImage.src = "";
+    headerImageCredit.src = "";
+    headerImageCredit.style.display = "none";
+  }
+}
+
+// 初期表示
+updateCharacterImage();
+updateHeaderCharacterImage();
+
+// キャラクター選択時
+characterSelect.addEventListener("change", () => {
+  updateCharacterImage();
+  updateHeaderCharacterImage();
+});
 
 function saveSettings() {
   settings = {
@@ -321,7 +320,7 @@ function saveSettings() {
     room_1: rooms_1.value,
     place: place.value
   };
-  updateHomeCharacterImage(); // ホーム画面の画像も更新
+  updateHeaderCharacterImage();
   localStorage.setItem("settings", JSON.stringify(settings));
   renderCurrentSettings();
   alert("保存しました");
