@@ -118,6 +118,9 @@ function updateUI() {
     if (settings.honorific && settings.honorific !== "なし") {
       displayParts.push(` ${settings.honorific}`);
     }
+    if (settings.block && settings.block !== "なし") {
+      displayParts.push(` ${settings.block}`);
+    }
     if (settings.room_1000 && settings.room_1000 !== "なし") {
       displayParts.push(` ${settings.room_1000}`);
     }
