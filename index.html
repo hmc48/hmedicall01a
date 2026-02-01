@@ -62,13 +62,14 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 </header>
 
 <div id="home" class="view active">
-  <img id="homeCharacterImage" src="" alt="キャラクター画像" 
+  <img id="homeCharacterImage" src="" alt="キャラクター画像"
        style="position:absolute; top:10px; right:10px; height:80px;">
 
-  <div id="homeImageCredit"
-       style="position:absolute; top:95px; right:10px; font-size:10px; color:#555;">
-  </div>
-            
+  <img id="homeImageCredit"
+       src=""
+       alt="クレジット画像"
+       style="position:absolute; top:95px; right:10px; height:30px;">
+              
   <div id="display">----</div>
 
   <!-- ★ 設定内容表示 -->
@@ -110,11 +111,14 @@ const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/audio", "c
 
   <label>キャラクター</label><br>
   <select id="character"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select>
-  <img id="characterImage" src="" alt="キャラクター画像" style="height:100px; vertical-align:middle; margin-left:10px;"><br><br>
 
-  <div id="characterImageCredit"
-     style="font-size:11px; color:#555; margin-left:10px;">
-  </div>
+  <img id="characterImage" src="" alt="キャラクター画像"
+     style="height:100px; vertical-align:middle; margin-left:10px;">
+
+  <img id="characterImageCredit"
+     src=""
+     alt="クレジット画像"
+     style="height:30px; margin-left:10px; display:block;">
 
   <label>チャイム</label><br>
   <select id="chime"><option>＿</option><option>チャイム1</option><option>チャイム2</option><option>チャイム3</option></select><br><br>
@@ -267,14 +271,14 @@ const homeCharacterImage = document.getElementById("homeCharacterImage");
 // ホーム画面の画像を更新する関数
 function updateHomeCharacterImage() {
   const char = CONFIG.characters.find(c => c.id === settings.character);
-  if(char){
+  if (char) {
     homeCharacterImage.src = char.image;
-    homeImageCredit.innerHTML = char.image_credit
-      ? `<a href="${char.image_credit}" target="_blank">© image credit</a>`
-      : "";
+    homeImageCredit.src = char.image_credit || "";
+    homeImageCredit.style.display = char.image_credit ? "block" : "none";
   } else {
     homeCharacterImage.src = "";
-    homeImageCredit.innerHTML = "";
+    homeImageCredit.src = "";
+    homeImageCredit.style.display = "none";
   }
 }
 
@@ -290,14 +294,14 @@ updateHomeCharacterImage();
 // 初期表示
 function updateCharacterImage() {
   const char = CONFIG.characters.find(c => c.id === characterSelect.value);
-  if(char){
+  if (char) {
     characterImage.src = char.image;
-    characterImageCredit.innerHTML = char.image_credit
-      ? `<a href="${char.image_credit}" target="_blank">© image credit</a>`
-      : "";
+    characterImageCredit.src = char.image_credit || "";
+    characterImageCredit.style.display = char.image_credit ? "block" : "none";
   } else {
     characterImage.src = "";
-    characterImageCredit.innerHTML = "";
+    characterImageCredit.src = "";
+    characterImageCredit.style.display = "none";
   }
 }
 updateCharacterImage();
