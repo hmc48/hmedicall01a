@@ -105,16 +105,16 @@ function updateUI() {
     document.getElementById("headerImageCredit").src = char.image_credit;
 
     // 表示したい項目を配列にまとめる
-    const displayParts = [`キャラクター：${char.name}`];
+    const displayParts = [` ${char.name}`];
 
     if (settings.prefix && settings.prefix !== "＿") {
-      displayParts.push(`接頭語：${settings.prefix}`);
+      displayParts.push(` ${settings.prefix}`);
     }
     if (settings.honorific && settings.honorific !== "なし") {
-      displayParts.push(`敬称：${settings.honorific}`);
+      displayParts.push(` ${settings.honorific}`);
     }
     if (settings.place) {
-      displayParts.push(`場所：${settings.place}`);
+      displayParts.push(` ${settings.place}`);
     }
 
     // 配列の中身を「 / 」でつなげて表示
