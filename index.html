@@ -16,13 +16,14 @@ nav button { margin:0 4px; padding:6px 16px; border-radius: 8px; border: none; b
 
 .keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:320px; margin:20px auto; }
 .keypad button { padding:20px; font-size:24px; border-radius: 12px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+.keypad button:active { background: #d1d1d6; }
 
-#display { text-align:center; font-size:48px; font-weight: bold; margin:20px; color: #007bff; }
-#currentSettings { text-align:center; font-size:14px; color:#666; margin-bottom:10px; }
-#statusMsg { text-align:center; font-size:12px; color:red; min-height: 1.5em; margin-bottom: 5px; }
+#display { text-align:center; font-size:48px; font-weight: bold; margin:20px; color: #007bff; letter-spacing: 2px; }
+#currentSettings { text-align:center; font-size:14px; color:#666; margin-bottom:5px; }
+#statusMsg { text-align:center; font-size:13px; color:#d9534f; min-height: 1.5em; margin-bottom: 10px; font-weight: bold; }
 
 .history-container { margin-top: 30px; border-top: 1px solid #d1d1d6; padding-top: 10px; }
-.history { background:#fff; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; display: flex; justify-content: space-between; }
+.history { background:#fff; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
 
 #headerCharacterImage { position:absolute; bottom:5px; left:10px; height:70px; }
 #headerImageCredit { position:absolute; top:5px; right:10px; height:25px; }
@@ -30,9 +31,10 @@ nav button { margin:0 4px; padding:6px 16px; border-radius: 8px; border: none; b
 #callButton { 
     padding: 20px; width: 100%; max-width: 320px; font-size: 24px; font-weight: bold; 
     border-radius: 16px; background-color: #28a745; color: white; border: none; 
-    cursor: pointer; display: block; margin: 20px auto;
+    cursor: pointer; display: block; margin: 20px auto; box-shadow: 0 4px 0 #1e7e34;
 }
-#callButton:disabled { background-color: #ccc; cursor: not-allowed; }
+#callButton:active { transform: translateY(2px); box-shadow: 0 2px 0 #1e7e34; }
+#callButton:disabled { background-color: #ccc; box-shadow: none; cursor: not-allowed; }
 
 .settings-group { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
 .settings-group p { margin: 10px 0; display: flex; justify-content: space-between; align-items: center; }
@@ -97,7 +99,11 @@ const display = document.getElementById("display");
 const statusMsg = document.getElementById("statusMsg");
 const callBtn = document.getElementById("callButton");
 
-window.onload = () => { loadFormValues(); updateUI(); renderHistory(); };
+window.onload = () => {
+  loadFormValues();
+  updateUI();
+  renderHistory();
+};
 
 function showView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
@@ -114,7 +120,7 @@ function updateUI() {
   if(char) {
     document.getElementById("headerCharacterImage").src = char.image;
     document.getElementById("headerImageCredit").src = char.image_credit;
-    document.getElementById("currentSettings").innerText = `キャラ: ${char.name.split('_')[1]} | チャイム: ${settings.chime || 'なし'}`;
+    document.getElementById("currentSettings").innerText = `キャラ: ${char.name.split('_')[1]} | 設定: ${settings.chime || 'なし'}`;
   }
 }
 
@@ -133,7 +139,7 @@ function saveSettings() {
   };
   localStorage.setItem("settings", JSON.stringify(settings));
   updateUI();
-  alert("保存しました");
+  alert("設定を保存しました");
 }
 
 function loadFormValues() {
@@ -150,30 +156,29 @@ function loadFormValues() {
   document.getElementById("place").value = settings.place;
 }
 
-/**
- * 音声を再生し、終了するまで待機するPromise
- */
-function playAudio(url) {
+// 順次再生のための関数
+function playAudioPromise(url) {
   return new Promise((resolve) => {
-    console.log("Playing:", url);
-    statusMsg.innerText = "再生中: " + url.split('/').pop();
+    const fileName = url.split('/').pop();
+    statusMsg.innerText = "再生中... " + fileName;
+    console.log("再生開始:", url);
+
     const audio = new Audio(url);
     
     audio.onended = () => {
-      statusMsg.innerText = "";
+      console.log("再生完了:", fileName);
       resolve();
     };
 
     audio.onerror = () => {
-      console.error("再生エラー:", url);
-      statusMsg.innerText = "エラー: " + url.split('/').pop();
-      setTimeout(() => { statusMsg.innerText = ""; resolve(); }, 500); // エラーでも次へ進む
+      console.error("再生失敗(404等):", url);
+      statusMsg.innerText = "エラー: " + fileName + " が見つかりません";
+      setTimeout(resolve, 800); // エラー時は少し待って次へ
     };
 
     audio.play().catch(err => {
       console.warn("再生ブロック:", err);
-      // ブラウザによりブロックされた場合は手動で次へ進むか、ユーザーに通知が必要
-      statusMsg.innerText = "再生がブロックされました。画面をクリックしてください。";
+      statusMsg.innerText = "ブラウザが再生をブロックしました。画面を一度クリックしてください。";
       resolve();
     });
   });
@@ -181,7 +186,8 @@ function playAudio(url) {
 
 async function call() {
   if(callBtn.disabled) return;
-  callBtn.disabled = True; // 二重押し防止
+  callBtn.disabled = true;
+  statusMsg.innerText = "準備中...";
 
   const char = CONFIG.characters.find(c => c.id === (settings.character || CONFIG.characters[0].id));
   const baseUrl = CONFIG.baseAudioUrl;
@@ -189,26 +195,42 @@ async function call() {
   const cid = char.id;
   const playlist = [];
 
-  // リスト作成
-  if(settings.chime && settings.chime !== "なし") playlist.push(`${baseUrl}/チャイム音/${settings.chime}.mp3`);
-  if(settings.prefix && settings.prefix !== "なし") playlist.push(`${baseUrl}/${cid}/03_1_お待たせ/${v}_${settings.prefix}.mp3`);
+  // プレイリスト構築
+  if(settings.chime && settings.chime !== "なし") {
+    playlist.push(`${baseUrl}/チャイム音/${settings.chime}.mp3`);
+  }
+  if(settings.prefix && settings.prefix !== "なし") {
+    playlist.push(`${baseUrl}/${cid}/03_1_お待たせ/${v}_${settings.prefix}.mp3`);
+  }
   if(settings.room_1000 && settings.room_1000 !== "なし") playlist.push(`${baseUrl}/${cid}/04_1_1000番台/${v}_${settings.room_1000}000.mp3`);
   if(settings.room_100 && settings.room_100 !== "なし") playlist.push(`${baseUrl}/${cid}/04_2_100番台/${v}_${settings.room_100}00.mp3`);
   if(settings.room_10 && settings.room_10 !== "なし") playlist.push(`${baseUrl}/${cid}/04_3_10番台/${v}_${settings.room_10}0.mp3`);
   if(settings.room_1 && settings.room_1 !== "なし") playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${settings.room_1}.mp3`);
-  if(settings.honorific && settings.honorific !== "なし") playlist.push(`${baseUrl}/${cid}/05_1_お待ちの方/${v}_${settings.honorific.replace("方", "かた")}.mp3`);
-  if(settings.block && settings.block !== "なし") playlist.push(`${baseUrl}/${cid}/06_1_ブロック番号/${v}_${settings.block}.mp3`);
-  if(settings.place) playlist.push(`${baseUrl}/${cid}/08_1_呼出場所/${v}_${settings.place}.mp3`);
 
-  // ポップアップ表示（確認用）
-  const fileNames = playlist.map(url => url.split('/').pop()).join('\n');
-  alert("以下の順序で再生を開始します：\n" + fileNames);
-
-  // 順次再生
-  for(const url of playlist) {
-    await playAudio(url);
+  if(settings.honorific && settings.honorific !== "なし") {
+    const hName = settings.honorific.replace("方", "かた");
+    playlist.push(`${baseUrl}/${cid}/05_1_お待ちの方/${v}_${hName}.mp3`);
+  }
+  if(settings.block && settings.block !== "なし") {
+    playlist.push(`${baseUrl}/${cid}/06_1_ブロック番号/${v}_${settings.block}.mp3`);
+  }
+  if(settings.place) {
+    playlist.push(`${baseUrl}/${cid}/08_1_呼出場所/${v}_${settings.place}.mp3`);
   }
 
+  // ポップアップで結合ファイル名の確認
+  if (playlist.length > 0) {
+    const fileListStr = playlist.map(url => url.split('/').pop()).join('\n');
+    alert("以下の順序で再生します：\n\n" + fileListStr);
+  }
+
+  // 実際の順次再生実行
+  for (const url of playlist) {
+    await playAudioPromise(url);
+  }
+
+  statusMsg.innerText = "再生完了";
+  
   // 履歴更新
   const now = new Date().toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'});
   history.unshift({ num: currentNum || "0", time: now });
@@ -216,12 +238,15 @@ async function call() {
   localStorage.setItem("history", JSON.stringify(history));
   renderHistory();
   
-  callBtn.disabled = False;
+  setTimeout(() => { 
+    statusMsg.innerText = "";
+    callBtn.disabled = false; 
+  }, 1000);
 }
 
 function renderHistory() {
   historyList.innerHTML = "<h4>最近の履歴</h4>" + history.map(h => `
-    <div class="history"><strong>${h.num} 番</strong><span>${h.time}</span></div>
+    <div class="history"><strong>${h.num} 番</strong> <span>${h.time}</span></div>
   `).join("");
 }
 </script>
