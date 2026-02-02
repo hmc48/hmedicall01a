@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>呼出システム</title>
 <style>
+/* ===== iPhone Safari 自動拡張防止（最重要） ===== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ボタン・セレクトの強制拡大防止 */
+button, select {
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
+}
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
 header { background:#007bff; color:#fff; padding:10px; text-align:center; position:relative; min-height:80px; }
 header h2 { margin:0; }
@@ -218,7 +230,9 @@ function loadFormValues() {
   document.getElementById("rooms_10").value = settings.room_10;
   document.getElementById("rooms_1").value = settings.room_1;
   document.getElementById("place").value = settings.place;
-  document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
+  document.getElementById("playbackRate").value =
+  String(settings.playbackRate ?? 1.0);
+
 }
 
 function playAudio(url) {
@@ -277,7 +291,7 @@ async function call() {
 
     // ===== チャイム =====
     if (settings.chime) {
-      playlist.push(`${baseUrl}/m_chime/${settings.chime}.mp3`);
+      playlist.push(`${baseUrl}/m_chime/${settings.chime},mp3`);
     }
 
     // ===== 接頭語 =====
