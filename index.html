@@ -305,6 +305,9 @@ async function call() {
       await playAudio(url);
     }
 
+    // ===== 再生終了後に入力クリア =====
+    clearDisplay();
+        
   } catch (err) {
     console.error("呼出中にエラー:", err);
   } finally {
