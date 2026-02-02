@@ -237,7 +237,6 @@ async function call() {
   lockUI(true);
 
   try {
-    const callNum = currentNum || "0";
     const now = new Date().toLocaleTimeString();
     history.unshift({ num: callNum, time: now });
     if(history.length > 10) history.pop();
