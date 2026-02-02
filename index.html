@@ -154,6 +154,9 @@ function updateUI() {
     if (settings.place) {
       displayParts.push(` ${settings.place}`);
     }
+    if (settings.playbackRate) {
+      displayParts.push(` (${settings.playbackRate}倍)`);
+    }
 
     // 配列の中身を「」でつなげて画面表示
     document.getElementById("currentSettings").innerText = displayParts.join("");
