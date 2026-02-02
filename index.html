@@ -8,14 +8,34 @@
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
 header { background:#007bff; color:#fff; padding:10px; text-align:center; position:relative; min-height:80px; }
 header h2 { margin:0; }
-nav button { margin:4px; padding:6px 12px; }
+nav button {
+  margin:4px;
+  padding:6px 12px;
+  font-size:16px;   /* ← 追加 */
+}
 .view { display:none; padding:10px; }
 .view.active { display:block; }
 .keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:300px; margin:auto; }
 .keypad button { padding:18px; font-size:20px; }
-#display { text-align:center; font-size:28px; margin:10px; }
-#currentSettings { text-align:center; font-size:14px; color:#333; margin-bottom:10px; }
-.history { background:#fff; padding:8px; margin-top:10px; border-radius:6px; border:1px solid #ddd; }
+#display {
+  text-align:center;
+  font-size:32px;   /* 見やすさUP */
+  margin:10px;
+}
+#currentSettings {
+  text-align:center;
+  font-size:16px;   /* ← 重要 */
+  color:#333;
+  margin-bottom:10px;
+}
+.history {
+  background:#fff;
+  padding:8px;
+  margin-top:10px;
+  border-radius:6px;
+  border:1px solid #ddd;
+  font-size:16px;   /* ← 追加 */
+}
 #headerCharacterImage { position:absolute; top:5px; left:10px; height:80px; }
 #headerImageCredit { position:absolute; top:5px; right:10px; height:30px; }
 #callButton { padding: 20px 50px; font-size: 24px; font-weight: bold; border-radius: 12px; background-color: #28a745; color: white; border: none; cursor: pointer; display: block; margin: 20px auto; }
