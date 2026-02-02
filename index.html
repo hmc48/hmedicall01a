@@ -125,8 +125,12 @@ function updateUI() {
     // 表示したい項目を配列にまとめる
     const displayParts = [` ${char.name}`];
 
-    if (settings.chime && settings.chime !== "なし") {
-      displayParts.push(` ${settings.chime}`);
+    if (settings.chime) {
+      // ファイル名から表示用ラベルを取得
+      const chimeObj = CONFIG.chimes.find(c => c.value === settings.chime);
+      if (chimeObj) {
+        displayParts.push(` ${chimeObj.label}`);
+      }
     }
 
     if (settings.prefix && settings.prefix !== "なし") {
