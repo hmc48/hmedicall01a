@@ -226,6 +226,16 @@ async function call() {
   isPlaying = true;
   lockUI(true);
 
+  // ===== 番号チェック =====
+  const callNum = currentNum || "0";
+  if (parseInt(callNum, 10) > 9999) {
+    alert("9999番までしか呼出できません。番号を確認してください。");
+    return; // 処理中断
+  }
+
+  isPlaying = true;
+  lockUI(true);
+
   try {
     const callNum = currentNum || "0";
     const now = new Date().toLocaleTimeString();
