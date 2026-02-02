@@ -76,7 +76,7 @@ nav button { margin:4px; padding:6px 12px; }
   <p>1000の位: <select id="rooms_1000"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
   <p>100の位: <select id="rooms_100"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
   <p>10の位: <select id="rooms_10"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
-  <p>1の位: <select id="rooms_1"><option>なし</option><option>1番</option><option>2番</option><option>3番</option><option>4番</option><option>5番</option><option>6番</option><option>7番</option><option>8番</option><option>9番</option></select></p>
+  <p>1の位: <select id="rooms_1"><option>なし</option><option>番</option><option>1番</option><option>2番</option><option>3番</option><option>4番</option><option>5番</option><option>6番</option><option>7番</option><option>8番</option><option>9番</option></select></p>
   <p>呼出場所: <select id="place"><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select></p>
   <button id="saveSettingsButton" onclick="saveSettings()">設定を保存</button>
 
@@ -88,7 +88,7 @@ nav button { margin:4px; padding:6px 12px; }
 </div>
 
 <script>
-const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/setting", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/11_四国めたん.png", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/12_ずんだもん.png", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/13_春日部つむぎ.png", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["なし", "チャイム1", "チャイム2", "チャイム3", "チャイム4", "チャイム5", "チャイム6"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "＿"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "rooms_1000": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_100": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_10": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_1": ["なし", "1番", "2番", "3番", "4番", "5番", "6番", "7番", "8番", "9番"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"], "playbackRates": [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.0, 2.5]};
+const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/setting", "characters": [{"id": "11_四国めたん", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/11_四国めたん.png", "voice": "001_四国めたん（ノーマル）"}, {"id": "12_ずんだもん", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/12_ずんだもん.png", "voice": "001_ずんだもん（ノーマル）"}, {"id": "13_春日部つむぎ", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/13_春日部つむぎ.png", "voice": "001_春日部つむぎ（ノーマル）"}], "chimes": ["なし", "チャイム1", "チャイム2", "チャイム3", "チャイム4", "チャイム5", "チャイム6"], "prefixes": ["大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします", "＿"], "honorifics": ["でお待ちの方", "の方", "なし"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "rooms_1000": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_100": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_10": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_1": ["なし", "番", "1番", "2番", "3番", "4番", "5番", "6番", "7番", "8番", "9番"], "places": ["窓口までお越しください", "受付までお越しください", "診察室までお越しください"], "playbackRates": [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.0, 2.5]};
 let currentNum = "";
 let history = JSON.parse(localStorage.getItem("history") || "[]");
 let settings = JSON.parse(localStorage.getItem("settings") || '{}');
@@ -268,7 +268,13 @@ async function call() {
     if (n1000 !== "0") playlist.push(`${baseUrl}/${cid}/04_1_1000番台/${v}_${n1000}000.mp3`);
     if (n100  !== "0") playlist.push(`${baseUrl}/${cid}/04_2_100番台/${v}_${n100}00.mp3`);
     if (n10   !== "0") playlist.push(`${baseUrl}/${cid}/04_3_10番台/${v}_${n10}0.mp3`);
-    if (n1    !== "0") playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${n1}番.mp3`);
+    // 1の位
+    if (n1 !== "0") {
+        playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${n1}番.mp3`);
+    } else {
+        // 0の場合は「番.mp3」を再生
+        playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_番.mp3`);
+    }
 
     // ===== 敬称 =====
     if (settings.honorific && settings.honorific !== "なし") {
@@ -291,8 +297,16 @@ async function call() {
     if (settings.room_10 && settings.room_10 !== "なし") {
       playlist.push(`${baseUrl}/${cid}/04_3_10番台/${v}_${settings.room_10}0.mp3`);
     }
+
+    // ===== 部屋番号 1の位 =====
     if (settings.room_1 && settings.room_1 !== "なし") {
-      playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${settings.room_1}.mp3`);
+      if (settings.room_1 !== "0") {
+        // 1〜9の場合
+        playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_${settings.room_1}番.mp3`);
+      } else {
+        // 0の場合
+        playlist.push(`${baseUrl}/${cid}/04_4_1番台/${v}_番.mp3`);
+      }
     }
 
     // ===== 呼出場所 =====
