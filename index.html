@@ -5,49 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>呼出システム</title>
 <style>
-/* ===== iPhone Safari 自動拡張防止（最重要） ===== */
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-/* ボタン・セレクトの強制拡大防止 */
-button, select {
-  font-size: 16px;
-  -webkit-appearance: none;
-  appearance: none;
-}
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
 header { background:#007bff; color:#fff; padding:10px; text-align:center; position:relative; min-height:80px; }
 header h2 { margin:0; }
-nav button {
-  margin:4px;
-  padding:6px 12px;
-  font-size:16px;   /* ← 追加 */
-}
+nav button { margin:4px; padding:6px 12px; }
 .view { display:none; padding:10px; }
 .view.active { display:block; }
 .keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:300px; margin:auto; }
 .keypad button { padding:18px; font-size:20px; }
-#display {
-  text-align:center;
-  font-size:32px;   /* 見やすさUP */
-  margin:10px;
-}
-#currentSettings {
-  text-align:center;
-  font-size:16px;   /* ← 重要 */
-  color:#333;
-  margin-bottom:10px;
-}
-.history {
-  background:#fff;
-  padding:8px;
-  margin-top:10px;
-  border-radius:6px;
-  border:1px solid #ddd;
-  font-size:16px;   /* ← 追加 */
-}
+#display { text-align:center; font-size:28px; margin:10px; }
+#currentSettings { text-align:center; font-size:14px; color:#333; margin-bottom:10px; }
+.history { background:#fff; padding:8px; margin-top:10px; border-radius:6px; border:1px solid #ddd; }
 #headerCharacterImage { position:absolute; top:5px; left:10px; height:80px; }
 #headerImageCredit { position:absolute; top:5px; right:10px; height:30px; }
 #callButton { padding: 20px 50px; font-size: 24px; font-weight: bold; border-radius: 12px; background-color: #28a745; color: white; border: none; cursor: pointer; display: block; margin: 20px auto; }
@@ -230,9 +198,7 @@ function loadFormValues() {
   document.getElementById("rooms_10").value = settings.room_10;
   document.getElementById("rooms_1").value = settings.room_1;
   document.getElementById("place").value = settings.place;
-  document.getElementById("playbackRate").value =
-  String(settings.playbackRate ?? 1.0);
-
+  document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
 }
 
 function playAudio(url) {
@@ -291,7 +257,7 @@ async function call() {
 
     // ===== チャイム =====
     if (settings.chime) {
-      playlist.push(`${baseUrl}/m_chime/${settings.chime},mp3`);
+      playlist.push(`${baseUrl}/m_chime/${settings.chime}.mp3`);
     }
 
     // ===== 接頭語 =====
