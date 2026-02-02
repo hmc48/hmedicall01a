@@ -4,6 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>呼出システム</title>
+/* ===== 設定タイトル横ボタン ===== */
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.character-detail-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #17a2b8;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.character-detail-button:hover {
+  background-color: #117a8b;
+}
+
 <style>
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
 header { background:#007bff; color:#fff; padding:10px; text-align:center; position:relative; min-height:80px; }
@@ -64,7 +87,18 @@ nav button { margin:4px; padding:6px 12px; }
 </div>
 
 <div id="settings" class="view">
-  <h3>設定</h3>
+
+  <div class="settings-header">
+    <h3>設定</h3>
+    <a
+      class="character-detail-button"
+      href="https://voicevox.hiroshiba.jp/product/shikoku_metan/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      キャラクター詳細
+    </a>
+  </div>
   <p>キャラクター: <select id="characterSelect"><option value="11_四国めたん">11_四国めたん</option><option value="12_ずんだもん">12_ずんだもん</option><option value="13_春日部つむぎ">13_春日部つむぎ</option></select></p>
   <p>チャイム音: <select id="chime"><option value="">なし</option><option value="m_chime01">チャイム1</option><option value="m_chime02">チャイム2</option><option value="m_chime03">チャイム3</option><option value="m_chime04">チャイム4</option><option value="m_chime05">チャイム5</option><option value="m_chime06">チャイム6</option><option value="m_chime07">チャイム7</option><option value="m_chime08">チャイム8</option><option value="m_chime09">チャイム9</option><option value="m_chime10">チャイム10</option></select></p>
   <p>接頭語: <select id="prefix"><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option><option>＿</option></select></p>
