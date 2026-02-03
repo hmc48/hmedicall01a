@@ -221,7 +221,6 @@ function saveSettings() {
 }
 
 function loadFormValues() {
-  if(!settings.character) return;
   characterSelect.value = settings.character;
   document.getElementById("chime").value = settings.chime;
   document.getElementById("prefix").value = settings.prefix;
