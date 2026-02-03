@@ -4,7 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>呼出システム</title>
+<style>
+/* ===== 設定タイトル横ボタン ===== */
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
 
+.character-detail-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #17a2b8;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.character-detail-button:hover {
+  background-color: #117a8b;
+}
+ </style>
 <style>
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
 header { background:#007bff; color:#fff; padding:10px; text-align:center; position:relative; min-height:80px; }
@@ -15,113 +38,340 @@ nav button { margin:4px; padding:6px 12px; }
 .keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:300px; margin:auto; }
 .keypad button { padding:18px; font-size:20px; }
 #display { text-align:center; font-size:28px; margin:10px; }
-#currentSettings { text-align:center; font-size:14px; margin-bottom:10px; }
-.history { background:#fff; padding:8px; margin-top:6px; border-radius:6px; }
-#callButton { padding:20px 50px; font-size:24px; font-weight:bold; border-radius:12px; background:#28a745; color:white; border:none; }
+#currentSettings { text-align:center; font-size:14px; color:#333; margin-bottom:10px; }
+.history { background:#fff; padding:8px; margin-top:10px; border-radius:6px; border:1px solid #ddd; }
+#headerCharacterImage { position:absolute; top:5px; left:10px; height:80px; }
+#headerImageCredit { position:absolute; top:5px; right:10px; height:30px; }
+#callButton { padding: 20px 50px; font-size: 24px; font-weight: bold; border-radius: 12px; background-color: #28a745; color: white; border: none; cursor: pointer; display: block; margin: 20px auto; }
+#callButton:active { background-color: #1e7e34; }
+#saveSettingsButton {
+  padding: 20px 50px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+}
+#saveSettingsButton:active {
+  background-color: #0056b3;
+}
 </style>
 </head>
-
 <body>
 
 <header>
-<h2>呼出システム</h2>
-<nav>
-<button onclick="showView('home')">ホーム</button>
-<button onclick="showView('settings')">設定</button>
-</nav>
+  <img id="headerCharacterImage" src="" alt="">
+  <img id="headerImageCredit" src="" alt="">
+  <h2>呼出システム</h2>
+  <nav>
+    <button onclick="showView('home')">ホーム</button>
+    <button onclick="showView('settings')">設定</button>
+    <button onclick="showView('terms')">説明・利用規約</button>
+  </nav>
 </header>
 
 <div id="home" class="view active">
-<div id="display">----</div>
-<div id="currentSettings"></div>
-
-<div class="keypad">
-<button onclick="addNum(1)">1</button><button onclick="addNum(2)">2</button><button onclick="addNum(3)">3</button>
-<button onclick="addNum(4)">4</button><button onclick="addNum(5)">5</button><button onclick="addNum(6)">6</button>
-<button onclick="addNum(7)">7</button><button onclick="addNum(8)">8</button><button onclick="addNum(9)">9</button>
-<button onclick="clearDisplay()">C</button><button onclick="addNum(0)">0</button><button onclick="backspace()">BS</button>
-</div>
-
-<button id="callButton" onclick="call()">呼出</button>
-<div id="historyList"></div>
+  <div id="display">----</div>
+  <div id="currentSettings">読み込み中...</div>
+  <div class="keypad">
+    <button onclick="addNum(1)">1</button><button onclick="addNum(2)">2</button><button onclick="addNum(3)">3</button>
+    <button onclick="addNum(4)">4</button><button onclick="addNum(5)">5</button><button onclick="addNum(6)">6</button>
+    <button onclick="addNum(7)">7</button><button onclick="addNum(8)">8</button><button onclick="addNum(9)">9</button>
+    <button onclick="clearDisplay()">クリア</button><button onclick="addNum(0)">0</button><button onclick="backspace()">BS</button>
+  </div>
+  <button id="callButton" onclick="call()">呼出</button>
+  <div id="historyList"></div>
 </div>
 
 <div id="settings" class="view">
-<p>キャラ <select id="characterSelect"><option value="11_shikoku">11_四国めたん</option><option value="12_zundamon">12_ずんだもん</option><option value="13_kasukabe">13_春日部つむぎ</option></select></p>
-<p>チャイム <select id="chime"><option value="">なし</option><option value="m_chime01">チャイム1</option><option value="m_chime02">チャイム2</option><option value="m_chime03">チャイム3</option><option value="m_chime04">チャイム4</option><option value="m_chime05">チャイム5</option><option value="m_chime06">チャイム6</option><option value="m_chime07">チャイム7</option><option value="m_chime08">チャイム8</option><option value="m_chime09">チャイム9</option><option value="m_chime10">チャイム10</option></select></p>
-<p>接頭語 <select id="prefix"><option>なし</option><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option></select></p>
-<p>敬称 <select id="honorific"><option>なし</option><option>でお待ちの方</option><option>の方</option></select></p>
-<p>ブロック <select id="block"><option>なし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select></p>
-<p>再生速度 <select id="playbackRate"><option value="0.8">0.8倍</option><option value="0.9">0.9倍</option><option value="1.0">1.0倍</option><option value="1.1">1.1倍</option><option value="1.2">1.2倍</option><option value="1.3">1.3倍</option><option value="1.4">1.4倍</option><option value="1.5">1.5倍</option><option value="1.8">1.8倍</option><option value="2.0">2.0倍</option><option value="2.5">2.5倍</option></select></p>
-<button onclick="saveSettings()">設定を保存</button>
+
+  <div class="settings-header">
+    <h3>設定</h3>
+    <a
+      class="character-detail-button"
+      href="https://voicevox.hiroshiba.jp/product/shikoku_metan/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      キャラクター詳細
+    </a>
+  </div>
+  <p>キャラクター: <select id="characterSelect"><option value="11_shikoku">11_四国めたん</option><option value="12_zundamon">12_ずんだもん</option><option value="13_kasukabe">13_春日部つむぎ</option></select></p>
+  <p>チャイム音: <select id="chime"><option value="">なし</option><option value="m_chime01">チャイム1</option><option value="m_chime02">チャイム2</option><option value="m_chime03">チャイム3</option><option value="m_chime04">チャイム4</option><option value="m_chime05">チャイム5</option><option value="m_chime06">チャイム6</option><option value="m_chime07">チャイム7</option><option value="m_chime08">チャイム8</option><option value="m_chime09">チャイム9</option><option value="m_chime10">チャイム10</option></select></p>
+  <p>接頭語: <select id="prefix"><option>なし</option><option>大変お待たせいたしました</option><option>お待たせいたしました</option><option>お呼び出しいたします</option></select></p>
+  <p>敬称: <select id="honorific"><option>なし</option><option>でお待ちの方</option><option>の方</option></select></p>
+  <p>再生速度: <select id="playbackRate"><option value="0.8">0.8倍</option><option value="0.9">0.9倍</option><option value="1.0">1.0倍</option><option value="1.1">1.1倍</option><option value="1.2">1.2倍</option><option value="1.3">1.3倍</option><option value="1.4">1.4倍</option><option value="1.5">1.5倍</option><option value="1.8">1.8倍</option><option value="2.0">2.0倍</option><option value="2.5">2.5倍</option></select></p>
+  <p>ブロック: <select id="block"><option>なし</option><option>Aブロック</option><option>Bブロック</option><option>Cブロック</option><option>Dブロック</option></select></p>
+  <p>【室番号】</p>
+  <p>1000の位: <select id="rooms_1000"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
+  <p>100の位: <select id="rooms_100"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
+  <p>10の位: <select id="rooms_10"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
+  <p>1の位: <select id="rooms_1"><option>なし</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></p>
+  <p>呼出場所: <select id="place"><option>なし</option><option>窓口までお越しください</option><option>受付までお越しください</option><option>診察室までお越しください</option></select></p>
+  <button id="saveSettingsButton" onclick="saveSettings()">設定を保存</button>
+
+</div>
+
+<div id="terms" class="view">
+  <h3>利用規約</h3>
+  <p>本システムは音声合成を利用した呼出システムです。ネットワーク環境が必要です。</p>
 </div>
 
 <script>
-const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/setting", "characters": [{"id": "11_shikoku", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/11_四国めたん.png", "voice": "11_shikoku"}, {"id": "12_zundamon", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/12_ずんだもん.png", "voice": "12_zundamon"}, {"id": "13_kasukabe", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/13_春日部つむぎ.png", "voice": "13_kasukabe"}], "chimes": [{"label": "なし", "value": ""}, {"label": "チャイム1", "value": "m_chime01"}, {"label": "チャイム2", "value": "m_chime02"}, {"label": "チャイム3", "value": "m_chime03"}, {"label": "チャイム4", "value": "m_chime04"}, {"label": "チャイム5", "value": "m_chime05"}, {"label": "チャイム6", "value": "m_chime06"}, {"label": "チャイム7", "value": "m_chime07"}, {"label": "チャイム8", "value": "m_chime08"}, {"label": "チャイム9", "value": "m_chime09"}, {"label": "チャイム10", "value": "m_chime10"}], "prefixes": ["なし", "大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします"], "honorifics": ["なし", "でお待ちの方", "の方"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "rooms": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "places": ["なし", "窓口までお越しください", "受付までお越しください", "診察室までお越しください"], "playbackRates": [0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.0, 2.5]};
+const CONFIG = {"baseAudioUrl": "https://hmc48.github.io/hmedicall01a/setting", "characters": [{"id": "11_shikoku", "name": "11_四国めたん", "image": "https://hmc48.github.io/hmedicall01a/images/11_四国めたん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/11_四国めたん.png", "voice": "11_shikoku"}, {"id": "12_zundamon", "name": "12_ずんだもん", "image": "https://hmc48.github.io/hmedicall01a/images/12_ずんだもん.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/12_ずんだもん.png", "voice": "12_zundamon"}, {"id": "13_kasukabe", "name": "13_春日部つむぎ", "image": "https://hmc48.github.io/hmedicall01a/images/13_春日部つむぎ.webp", "image_credit": "https://hmc48.github.io/hmedicall01a/images_credit/13_春日部つむぎ.png", "voice": "13_kasukabe"}], "chimes": [{"label": "なし", "value": ""}, {"label": "チャイム1", "value": "m_chime01"}, {"label": "チャイム2", "value": "m_chime02"}, {"label": "チャイム3", "value": "m_chime03"}, {"label": "チャイム4", "value": "m_chime04"}, {"label": "チャイム5", "value": "m_chime05"}, {"label": "チャイム6", "value": "m_chime06"}, {"label": "チャイム7", "value": "m_chime07"}, {"label": "チャイム8", "value": "m_chime08"}, {"label": "チャイム9", "value": "m_chime09"}, {"label": "チャイム10", "value": "m_chime10"}], "prefixes": ["なし", "大変お待たせいたしました", "お待たせいたしました", "お呼び出しいたします"], "honorifics": ["なし", "でお待ちの方", "の方"], "blocks": ["なし", "Aブロック", "Bブロック", "Cブロック", "Dブロック"], "rooms": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_1000": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_100": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_10": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "rooms_1": ["なし", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "places": ["なし", "窓口までお越しください", "受付までお越しください", "診察室までお越しください"], "playbackRates": [0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.0, 2.5]};
 let currentNum = "";
-let isPlaying = false;
 let history = JSON.parse(localStorage.getItem("history") || "[]");
-let settings = JSON.parse(localStorage.getItem("settings") || "{}");
+let settings = JSON.parse(localStorage.getItem("settings") || '{}');
+let isPlaying = false;
 
-function showView(id){
- document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
- document.getElementById(id).classList.add("active");
+// 要素の取得
+const display = document.getElementById("display");
+const historyList = document.getElementById("historyList");
+const characterSelect = document.getElementById("characterSelect");
+
+// 初期表示
+window.onload = () => {
+  loadFormValues();
+  updateUI();
+  renderHistory();
+};
+
+function showView(id) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-function addNum(n){ currentNum += n; updateDisplay(); }
-function clearDisplay(){ currentNum=""; updateDisplay(); }
-function backspace(){ currentNum=currentNum.slice(0,-1); updateDisplay(); }
-function updateDisplay(){ document.getElementById("display").innerText=currentNum||"----"; }
+function addNum(n) { currentNum += n; updateDisplay(); }
+function clearDisplay() { currentNum = ""; updateDisplay(); }
+function backspace() { currentNum = currentNum.slice(0,-1); updateDisplay(); }
+function updateDisplay() { display.innerText = currentNum || "----"; }
 
-function playAudio(url){
- return new Promise(res=>{
-  const a=new Audio(url);
-  a.playbackRate=settings.playbackRate||1.0;
-  a.onended=res;
-  a.onerror=res;
-  a.play().catch(res);
- });
+function updateUI() {
+  const char = CONFIG.characters.find(c => c.id === (settings.character || CONFIG.characters[0].id));
+  if(char) {
+    document.getElementById("headerCharacterImage").src = char.image;
+    document.getElementById("headerImageCredit").src = char.image_credit;
+
+    // 表示したい項目を配列にまとめる
+    const displayParts = [` ${char.name}`];
+
+    if (settings.chime) {
+      // ファイル名から表示用ラベルを取得
+      const chimeObj = CONFIG.chimes.find(c => c.value === settings.chime);
+      if (chimeObj) {
+        displayParts.push(` ${chimeObj.label}`);
+      }
+    }
+
+    if (settings.prefix && settings.prefix !== "なし") {
+      displayParts.push(` ${settings.prefix}`);
+    }
+    displayParts.push("〇〇番");
+    if (settings.honorific && settings.honorific !== "なし") {
+      displayParts.push(` ${settings.honorific}`);
+    }
+    if (settings.block && settings.block !== "なし") {
+      displayParts.push(` ${settings.block}`);
+    }
+    if (settings.room_1000 && settings.room_1000 !== "なし") {
+      displayParts.push(` ${settings.room_1000}`);
+    }
+    if (settings.room_100 && settings.room_100 !== "なし") {
+      displayParts.push(` ${settings.room_100}`);
+    }
+    if (settings.room_10 && settings.room_10 !== "なし") {
+      displayParts.push(` ${settings.room_10}`);
+    }
+    if (settings.room_1 && settings.room_1 !== "なし") {
+      displayParts.push(` ${settings.room_1}番`);
+    }
+    if (settings.place) {
+      displayParts.push(` ${settings.place}`);
+    }
+    if (settings.playbackRate) {
+      displayParts.push(` (${settings.playbackRate}倍)`);
+    }
+
+    // 配列の中身を「」でつなげて画面表示
+    document.getElementById("currentSettings").innerText = displayParts.join("");
+  }
 }
 
-async function call(){
- if(isPlaying) return;
- isPlaying=true;
-
- try{
-  const char=CONFIG.characters.find(c=>c.id===settings.character)||CONFIG.characters[0];
-  const base=CONFIG.baseAudioUrl;
-  const v=char.voice;
-  const cid=char.id;
-  const num=(currentNum||"0").padStart(4,"0");
-  const list=[];
-
-  if(settings.chime) list.push(`${base}/m_chime/${settings.chime}.mp3`);
-
-  if(num[0]!=="0") list.push(`${base}/${cid}/02_call_1000/${v}_02_${num[0]}000.mp3`);
-  if(num[1]!=="0") list.push(`${base}/${cid}/03_call_100/${v}_03_${num[1]}00.mp3`);
-  if(num[2]!=="0") list.push(`${base}/${cid}/04_call_10/${v}_04_${num[2]}0.mp3`);
-  if(num[3]!=="0") list.push(`${base}/${cid}/05_call_1/${v}_05_${num[3]}.mp3`);
-
-  for(const u of list){ await playAudio(u); }
-
- }finally{
-  isPlaying=false;
-  clearDisplay();
- }
+function saveSettings() {
+  settings = {
+    character: characterSelect.value,
+    chime: document.getElementById("chime").value,
+    prefix: document.getElementById("prefix").value,
+    honorific: document.getElementById("honorific").value,
+    block: document.getElementById("block").value,
+    room_1000: document.getElementById("rooms_1000").value,
+    room_100: document.getElementById("rooms_100").value,
+    room_10: document.getElementById("rooms_10").value,
+    room_1: document.getElementById("rooms_1").value,
+    place: document.getElementById("place").value,
+    playbackRate: parseFloat(document.getElementById("playbackRate").value)
+  };
+  localStorage.setItem("settings", JSON.stringify(settings));
+  updateUI();
+  alert("設定を保存しました");
 }
 
-function saveSettings(){
- settings={
-  character:document.getElementById("characterSelect").value,
-  chime:document.getElementById("chime").value,
-  prefix:document.getElementById("prefix").value,
-  honorific:document.getElementById("honorific").value,
-  block:document.getElementById("block").value,
-  playbackRate:parseFloat(document.getElementById("playbackRate").value)
- };
- localStorage.setItem("settings",JSON.stringify(settings));
+function loadFormValues() {
+  if(!settings.character) return;
+  characterSelect.value = settings.character;
+  document.getElementById("chime").value = settings.chime;
+  document.getElementById("prefix").value = settings.prefix;
+  document.getElementById("honorific").value = settings.honorific;
+  document.getElementById("block").value = settings.block;
+  document.getElementById("rooms_1000").value = settings.room_1000;
+  document.getElementById("rooms_100").value = settings.room_100;
+  document.getElementById("rooms_10").value = settings.room_10;
+  document.getElementById("rooms_1").value = settings.room_1;
+  document.getElementById("place").value = settings.place;
+  document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
+}
+
+function playAudio(url) {
+  return new Promise((resolve) => {
+    const audio = new Audio(url);
+    audio.playbackRate = settings.playbackRate || 1.0;
+    audio.onended = resolve;
+    audio.onerror = (e) => { console.error("再生失敗:", url); resolve(); };
+    audio.play().catch(resolve);
+  });
+}
+
+// ===== UIロック／解除 =====
+function lockUI(lock) {
+  document.querySelectorAll("button, select").forEach(el => {
+    el.disabled = lock;
+  });
+
+  const callBtn = document.getElementById("callButton");
+  if (callBtn) {
+    callBtn.innerText = lock ? "再生中…" : "呼出";
+  }
+}
+
+async function call() {
+  // 二重再生防止
+  if (isPlaying) return;
+
+  const callNum = currentNum || "0";
+
+  // ===== 番号チェック =====
+  if (!callNum || parseInt(callNum, 10) > 9999) {
+    alert("番号は0〜9999の範囲で入力してください。");
+    return; // 処理中断（UIロックされない）
+  }
+
+  // UIロック & 再生フラグ
+  isPlaying = true;
+  lockUI(true);
+
+  try {
+    // 履歴登録
+    const now = new Date().toLocaleTimeString();
+    history.unshift({ num: callNum, time: now });
+    if (history.length > 10) history.pop();
+    localStorage.setItem("history", JSON.stringify(history));
+    renderHistory();
+
+    const char = CONFIG.characters.find(
+      c => c.id === (settings.character || CONFIG.characters[0].id)
+    );
+    const baseUrl = CONFIG.baseAudioUrl;
+    const v = char.voice;
+    const cid = char.id;
+    const playlist = [];
+
+    // ===== チャイム =====
+    if (settings.chime) {
+      playlist.push(`${baseUrl}/m_chime/${settings.chime}.mp3`);
+    }
+
+    // ===== 接頭語 =====
+    if (settings.prefix && settings.prefix !== "なし") {
+      playlist.push(`${baseUrl}/${cid}/01_prefixes/${v}_${settings.prefix}.mp3`);
+    }
+
+    // ===== 番号の音声 =====
+    const num = callNum.padStart(4, "0");
+    const n1000 = num[0], n100 = num[1], n10 = num[2], n1 = num[3];
+
+    if (n1000 !== "0") playlist.push(`${baseUrl}/${cid}/02_call_1000/${v}_${n1000}000.mp3`);
+    if (n100  !== "0") playlist.push(`${baseUrl}/${cid}/02_call_100/${v}_${n100}00.mp3`);
+    if (n10   !== "0") playlist.push(`${baseUrl}/${cid}/02_call_10/${v}_${n10}0.mp3`);
+    // 1の位
+    if (n1 !== "0") {
+        playlist.push(`${baseUrl}/${cid}/02_call_1/${v}_${n1}番.mp3`);
+    } else {
+        // 0の場合は「番.mp3」を再生
+        playlist.push(`${baseUrl}/${cid}/02_call_1/${v}_番.mp3`);
+    }
+
+    // ===== 敬称 =====
+    if (settings.honorific && settings.honorific !== "なし") {
+      const hName = settings.honorific.replace("方", "かた");
+      playlist.push(`${baseUrl}/${cid}/06_honorifics/${v}_${hName}.mp3`);
+    }
+
+    // ===== ブロック =====
+    if (settings.block && settings.block !== "なし") {
+      playlist.push(`${baseUrl}/${cid}/07_blocks/${v}_${settings.block}.mp3`);
+    }
+
+    // ===== 部屋番号 =====
+    if (settings.room_1000 && settings.room_1000 !== "なし") {
+      playlist.push(`${baseUrl}/${cid}/08_rooms_1000/${v}_${settings.room_1000}000.mp3`);
+    }
+    if (settings.room_100 && settings.room_100 !== "なし") {
+      playlist.push(`${baseUrl}/${cid}/08_rooms_100/${v}_${settings.room_100}00.mp3`);
+    }
+    if (settings.room_10 && settings.room_10 !== "なし") {
+      playlist.push(`${baseUrl}/${cid}/08_rooms_10/${v}_${settings.room_10}0.mp3`);
+    }
+
+// ===== 部屋番号 1の位 =====
+if (settings.room_1 && settings.room_1 !== "なし") {
+  if (settings.room_1 === "0") {
+    // 0番の場合
+    playlist.push(`${baseUrl}/${cid}/08_rooms_1/${v}_番.mp3`);
+  } else if (["1","2","3","4","5","6","7","8","9"].includes(settings.room_1)) {
+    // 1〜9番の場合
+    playlist.push(`${baseUrl}/${cid}/08_rooms_1/${v}_${settings.room_1}番.mp3`);
+  }
+}
+    
+    // ===== 呼出場所 =====
+    if (settings.place) {
+      playlist.push(`${baseUrl}/${cid}/12_places/${v}_${settings.place}.mp3`);
+    }
+
+    // ===== 再生 =====
+    for (const url of playlist) {
+      await playAudio(url);
+    }
+
+    // ===== 再生終了後に入力クリア =====
+    clearDisplay();
+        
+  } catch (err) {
+    console.error("呼出中にエラー:", err);
+  } finally {
+    // 必ずロック解除（途中で失敗しても）
+    lockUI(false);
+    isPlaying = false;
+  }
+}
+
+function renderHistory() {
+  historyList.innerHTML = "<h4>履歴(Max10件)</h4>" + history.map(h => `<div class="history">${h.time} - ${h.num}番</div>`).join("");
 }
 </script>
-
 </body>
 </html>
