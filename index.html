@@ -59,6 +59,42 @@ nav button { margin:4px; padding:6px 12px; }
 #saveSettingsButton:active {
   background-color: #0056b3;
 }
+
+/* ===== ご案内画面 ===== */
+.info-title {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.info-current {
+  background: #007bff;
+  color: #fff;
+  font-size: 64px;
+  font-weight: bold;
+  text-align: center;
+  padding: 30px 0;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+/* 履歴グリッド */
+.info-history {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* 履歴ボックス */
+.info-box {
+  background: #007bff;
+  color: #fff;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
 </style>
 </head>
 <body>
@@ -66,7 +102,7 @@ nav button { margin:4px; padding:6px 12px; }
 <header>
   <img id="headerCharacterImage" src="" alt="">
   <img id="headerImageCredit" src="" alt="">
-  <h2>ご案内/h2>
+  <h2>ご案内<[/h2>
   <nav>
     <button onclick="showView('home')">ホーム</button>
     <button onclick="showView('Information')">ご案内</button>
@@ -118,8 +154,13 @@ nav button { margin:4px; padding:6px 12px; }
 </div>
 
 <div id="Information" class="view">
-  <h3>ご案内中の番号</h3>
-  <p>番号がご案内しています</p>
+  <h2 class="info-title">次の番号の方はお呼びしています</h2>
+
+  <!-- 現在呼出番号 -->
+  <div id="infoCurrent" class="info-current">----</div>
+
+  <!-- 履歴 -->
+  <div id="infoHistory" class="info-history"></div>
 </div>
 
 <div id="terms" class="view">
@@ -314,6 +355,7 @@ function lockUI(lock) {
 async function call() {
   // 二重再生防止
   if (isPlaying) return;
+  showView("Information");   // ★ 画面切替
 
   const callNum = currentNum || "0";
 
