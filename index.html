@@ -342,7 +342,7 @@ async function call() {
     }
 
     // ===== 接頭語 =====
-    if (settings.prefix && settings.prefix !== "なし") {
+    if (settings.prefix) {
       playlist.push(`${baseUrl}/${cid}/01_prefixes/${v}_${settings.prefix}.mp3`);
     }
 
@@ -367,13 +367,17 @@ async function call() {
     }
     
     // ===== 敬称 =====
-    if (settings.honorific && settings.honorific !== "なし") {
-      const hName = settings.honorific.replace("方", "かた");
-      playlist.push(`${baseUrl}/${cid}/06_honorifics/${v}_${hName}.mp3`);
+    if (settings.honorific) {
+       playlist.push(
+  `       ${baseUrl}/${cid}/06_honorifics/${v}_${settings.honorific}.mp3`);
     }
 
+
+
+
+
     // ===== ブロック =====
-    if (settings.block && settings.block !== "なし") {
+    if (settings.block) {
       playlist.push(`${baseUrl}/${cid}/07_blocks/${v}_${settings.block}.mp3`);
     }
 
