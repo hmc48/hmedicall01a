@@ -346,6 +346,8 @@ async function call() {
       playlist.push(`${baseUrl}/${cid}/01_prefixes/${v}_${settings.prefix}.mp3`);
     }
 
+
+★★    
     // ===== 番号の音声 =====
     const num = callNum.padStart(4, "0");
     const n1000 = num[0], n100 = num[1], n10 = num[2], n1 = num[3];
@@ -354,13 +356,28 @@ async function call() {
     if (n100  !== "0") playlist.push(`${baseUrl}/${cid}/02_call_100/${v}_${n100}00.mp3`);
     if (n10   !== "0") playlist.push(`${baseUrl}/${cid}/02_call_10/${v}_${n10}0.mp3`);
     // 1の位
+
+    // ===== 電卓入力の数字（修正後）=====
+    const num = callNum.padStart(4, "0");
+    const n1000 = num[0], n100 = num[1], n10 = num[2], n1 = num[3];
+
+    if (n1000 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/02_call_1000/${v}_02_${n1000}000.mp3`);
+    }
+    if (n100 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/03_call_100/${v}_03_${n100}00.mp3`);
+    }
+    if (n10 !== "0") {
+      playlist.push(`${baseUrl}/${cid}/04_call_10/${v}_04_${n10}0.mp3`);
+    }
     if (n1 !== "0") {
-        playlist.push(`${baseUrl}/${cid}/02_call_1/${v}_${n1}番.mp3`);
+      playlist.push(`${baseUrl}/${cid}/05_call_1/${v}_05_${n1}.mp3`);
     } else {
         // 0の場合は「番.mp3」を再生
-        playlist.push(`${baseUrl}/${cid}/02_call_1/${v}_番.mp3`);
+        playlist.push(`${baseUrl}/${cid}/05_call_1_番.mp3`);
     }
 
+★★    
     // ===== 敬称 =====
     if (settings.honorific && settings.honorific !== "なし") {
       const hName = settings.honorific.replace("方", "かた");
@@ -372,25 +389,37 @@ async function call() {
       playlist.push(`${baseUrl}/${cid}/07_blocks/${v}_${settings.block}.mp3`);
     }
 
-    // ===== 部屋番号 =====
-    if (settings.room_1000 && settings.room_1000 !== "なし") {
-      playlist.push(`${baseUrl}/${cid}/08_rooms_1000/${v}_${settings.room_1000}000.mp3`);
+    // ===== 部屋番号（修正後）=====
+    if (settings.room_1000) {
+      playlist.push(
+        `${baseUrl}/${cid}/08_rooms_1000/${v}_${settings.room_1000}.mp3`
+      );
     }
-    if (settings.room_100 && settings.room_100 !== "なし") {
-      playlist.push(`${baseUrl}/${cid}/08_rooms_100/${v}_${settings.room_100}00.mp3`);
+    if (settings.room_100) {
+      playlist.push(
+        `${baseUrl}/${cid}/09_rooms_100/${v}_${settings.room_100}.mp3`
+      );
     }
-    if (settings.room_10 && settings.room_10 !== "なし") {
-      playlist.push(`${baseUrl}/${cid}/08_rooms_10/${v}_${settings.room_10}0.mp3`);
+    if (settings.room_10) {
+      playlist.push(
+        `${baseUrl}/${cid}/10_rooms_10/${v}_${settings.room_10}.mp3`
+      );
+    }
+    if (settings.room_1) {
+      playlist.push(
+        `${baseUrl}/${cid}/11_rooms_1/${v}_${settings.room_1}.mp3`
+      );
     }
 
+    
 // ===== 部屋番号 1の位 =====
 if (settings.room_1 && settings.room_1 !== "なし") {
   if (settings.room_1 === "0") {
     // 0番の場合
-    playlist.push(`${baseUrl}/${cid}/08_rooms_1/${v}_番.mp3`);
+    playlist.push(`${baseUrl}/${cid}/11_番.mp3`);
   } else if (["1","2","3","4","5","6","7","8","9"].includes(settings.room_1)) {
     // 1〜9番の場合
-    playlist.push(`${baseUrl}/${cid}/08_rooms_1/${v}_${settings.room_1}番.mp3`);
+    playlist.push(`${baseUrl}/${cid}/11_rooms_1/${v}_${settings.room_1}番.mp3`);
   }
 }
     
