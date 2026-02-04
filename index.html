@@ -147,7 +147,7 @@ nav button { margin:4px; padding:6px 12px; }
 /* ===== 設定保存ボタン（キャラクター詳細と同サイズ・同系色） ===== */
 .save-settings-button {
   padding: 10px 16px;        /* サイズ統一 */
-  font-size: 16px;           /* 文字サイズ統一 */
+  font-size: 11px;           /* 文字サイズ統一 */
   font-weight: bold;
 
   background-color: #007bff; /* 青 */
@@ -190,7 +190,7 @@ nav button { margin:4px; padding:6px 12px; }
 <div id="settings" class="view">
 
 <div class="settings-header">
-  <h3>設定</h3>
+  <h3>設定項目</h3>
 
   <button id="saveSettingsButton" class="save-settings-button">
     設定を保存
@@ -218,6 +218,7 @@ nav button { margin:4px; padding:6px 12px; }
   <p>10の位: <select id="rooms_10"><option value="">なし</option><option value="0">0</option><option value="10_10">1</option><option value="10_20">2</option><option value="10_30">3</option><option value="10_40">4</option><option value="10_50">5</option><option value="10_60">6</option><option value="10_70">7</option><option value="10_80">8</option><option value="10_90">9</option></select></p>
   <p>1の位: <select id="rooms_1"><option value="">なし</option><option value="0">0</option><option value="11_1">1</option><option value="11_2">2</option><option value="11_3">3</option><option value="11_4">4</option><option value="11_5">5</option><option value="11_6">6</option><option value="11_7">7</option><option value="11_8">8</option><option value="11_9">9</option></select></p>
   <p>呼出場所: <select id="place"><option value="">なし</option><option value="12_01">お入りください</option><option value="12_02">受付までお越しください</option><option value="12_03">処置室までお越しください</option><option value="12_04">診察室までお越しください</option><option value="12_05">窓口までお越しください</option></select></p>
+  <button id="saveSettingsButton" onclick="saveSettings()">設定を保存</button>
 
 </div>
 
