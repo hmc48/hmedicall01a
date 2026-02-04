@@ -102,7 +102,7 @@ nav button { margin:4px; padding:6px 12px; }
 <header>
   <img id="headerCharacterImage" src="" alt="">
   <img id="headerImageCredit" src="" alt="">
-  <h2>ご案内<[/h2>
+  <h2>ご案内</h2>
   <nav>
     <button onclick="showView('home')">ホーム</button>
     <button onclick="showView('Information')">ご案内</button>
@@ -501,7 +501,7 @@ function renderHistory() {
 function updateInformationCurrent(num) {
   const el = document.getElementById("infoCurrent");
   if (!el) return;
-  el.innerText = num + "番";
+  el.innerText = num ;
 }
 
 function renderInformationHistory() {
