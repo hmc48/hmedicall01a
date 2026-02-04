@@ -393,22 +393,24 @@ async function call() {
         `${baseUrl}/${cid}/10_rooms_10/${v}_${settings.room_10}.mp3`
       );
     }
-    
-    // ===== 部屋番号 1の位（修正版）=====
+
+    // ===== 部屋番号 1の位（最終仕様）=====
     if (settings.room_1) {
-      if (settings.room_1 === "0") {
-        // 0番
+
+      // 1～9（11_1 ～ 11_9）
+      if (/^11_[1-9]$/.test(settings.room_1)) {
         playlist.push(
-          `${baseUrl}/${cid}/11_rooms_1/${v}_0.mp3`
+          `${baseUrl}/${cid}/11_rooms_1/${v}_${settings.room_1}.mp3`
         );
+
+      // それ以外（0・空など）
       } else {
-        // 1〜9番（value は 11_1 など）
         playlist.push(
-          `${baseUrl}/${cid}/11_rooms_1/${v}_${settings.room_1}番.mp3`
+          `${baseUrl}/${cid}/11_rooms_1/${v}_11_番.mp3`
         );
       }
     }
-   
+  
     // ===== 呼出場所 =====
     if (settings.place) {
       playlist.push(`${baseUrl}/${cid}/12_places/${v}_${settings.place}.mp3`);
