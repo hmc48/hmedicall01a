@@ -60,6 +60,16 @@ nav button { margin:4px; padding:6px 12px; }
   background-color: #0056b3;
 }
 
+/* ===== ご案内画面ではナビを簡素化 ===== */
+.info-mode header nav button {
+  display: none;
+}
+
+/* ホームボタンだけ表示 */
+.info-mode header nav button:first-child {
+  display: inline-block;
+}
+
 /* ===== ご案内画面 ===64P→100P== */
 .info-title {
   text-align: center;
@@ -192,9 +202,12 @@ function showView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
-  // ★ 画面切替時の初期化（ご案内画面）
+  // ★ 画面切替時の初期化（ご案内画面）  
   if (id === "Information") {
+    document.body.classList.add("info-mode");   // ★ 追加
     renderInformationHistory();
+  } else {
+    document.body.classList.remove("info-mode"); // ★ 追加
   }
 }
 
