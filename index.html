@@ -144,6 +144,20 @@ nav button { margin:4px; padding:6px 12px; }
   }
 }
 
+/* ===== 設定保存ボタン（キャラクター詳細と同サイズ・同系色） ===== */
+.save-settings-button {
+  padding: 10px 16px;        /* サイズ統一 */
+  font-size: 16px;           /* 文字サイズ統一 */
+  font-weight: bold;
+
+  background-color: #007bff; /* 青 */
+  color: #ffffff;            /* 白 */
+
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -175,17 +189,23 @@ nav button { margin:4px; padding:6px 12px; }
 
 <div id="settings" class="view">
 
-  <div class="settings-header">
-    <h3>設定</h3>
-    <a
-      class="character-detail-button"
-      href="https://voicevox.hiroshiba.jp/product/shikoku_metan/"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      キャラクター詳細
-    </a>
-  </div>
+<div class="settings-header">
+  <h3>設定</h3>
+
+  <button id="saveSettingsButton" class="save-settings-button">
+    設定を保存
+  </button>
+
+  <a
+    class="character-detail-button"
+    href="https://voicevox.hiroshiba.jp/product/shikoku_metan/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    キャラクター詳細
+  </a>
+</div>
+
   <p>キャラクター: <select id="characterSelect"><option value="11_shikoku">11_四国めたん</option><option value="12_zundamon">12_ずんだもん</option><option value="13_kasukabe">13_春日部つむぎ</option></select></p>
   <p>チャイム音: <select id="chime"><option value="">なし</option><option value="m_chime01">チャイム1</option><option value="m_chime02">チャイム2</option><option value="m_chime03">チャイム3</option><option value="m_chime04">チャイム4</option><option value="m_chime05">チャイム5</option><option value="m_chime06">チャイム6</option><option value="m_chime07">チャイム7</option><option value="m_chime08">チャイム8</option><option value="m_chime09">チャイム9</option><option value="m_chime10">チャイム10</option></select></p>
   <p>接頭語: <select id="prefix"><option value="">なし</option><option value="01_01">お呼び出しいたします</option><option value="01_02">お待たせいたしました</option><option value="01_03">大変お待たせいたしました</option></select></p>
@@ -198,7 +218,6 @@ nav button { margin:4px; padding:6px 12px; }
   <p>10の位: <select id="rooms_10"><option value="">なし</option><option value="0">0</option><option value="10_10">1</option><option value="10_20">2</option><option value="10_30">3</option><option value="10_40">4</option><option value="10_50">5</option><option value="10_60">6</option><option value="10_70">7</option><option value="10_80">8</option><option value="10_90">9</option></select></p>
   <p>1の位: <select id="rooms_1"><option value="">なし</option><option value="0">0</option><option value="11_1">1</option><option value="11_2">2</option><option value="11_3">3</option><option value="11_4">4</option><option value="11_5">5</option><option value="11_6">6</option><option value="11_7">7</option><option value="11_8">8</option><option value="11_9">9</option></select></p>
   <p>呼出場所: <select id="place"><option value="">なし</option><option value="12_01">お入りください</option><option value="12_02">受付までお越しください</option><option value="12_03">処置室までお越しください</option><option value="12_04">診察室までお越しください</option><option value="12_05">窓口までお越しください</option></select></p>
-  <button id="saveSettingsButton" onclick="saveSettings()">設定を保存</button>
 
 </div>
 
