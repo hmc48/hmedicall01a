@@ -244,8 +244,9 @@ let history = JSON.parse(localStorage.getItem("history") || "[]");
 let settings = JSON.parse(localStorage.getItem("settings") || '{}');
 let isPlaying = false;
 
-// ===== シームレス再生用 AudioContext（★ここ）=====
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// ===== シームレス再生用 AudioContext =====
+let audioCtx = null;
+
 
 // 要素の取得
 const display = document.getElementById("display");
@@ -460,7 +461,17 @@ function lockUI(lock) {
 async function call() {
   // 二重再生防止
   if (isPlaying) return;
-  
+
+  // ★ ユーザー操作後に AudioContext を生成（最重要）
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // ★ Safari / iOS / Chrome 対策
+  if (audioCtx.state === "suspended") {
+    await audioCtx.resume();
+  }
+
   showView("Information");   // 画面切替
 
   const callNum = currentNum || "0";
