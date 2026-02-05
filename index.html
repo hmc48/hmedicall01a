@@ -409,10 +409,6 @@ function loadFormValues() {
   document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
 }
 
-function loadFormValues() {
-  ...
-}
-
 /* ===== シームレス再生関数（★ここ）===== */
 async function playPlaylistGapless(playlist) {
   // Safari / iOS 対策
@@ -530,12 +526,8 @@ async function call() {
     // ===== 敬称 =====
     if (settings.honorific) {
        playlist.push(
-  `       ${baseUrl}/${cid}/06_honorifics/${v}_${settings.honorific}.mp3`);
+       `${baseUrl}/${cid}/06_honorifics/${v}_${settings.honorific}.mp3`);
     }
-
-
-
-
 
     // ===== ブロック =====
     if (settings.block) {
@@ -581,10 +573,6 @@ async function call() {
       playlist.push(`${baseUrl}/${cid}/12_places/${v}_${settings.place}.mp3`);
     }
 
-    ★// ===== 再生 =====
-    ★for (const url of playlist) {
-    ★  await playAudio(url);
-    ★}
 
     // ===== 再生終了後に入力クリア =====
     clearDisplay();
