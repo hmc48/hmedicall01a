@@ -573,6 +573,8 @@ async function call() {
       playlist.push(`${baseUrl}/${cid}/12_places/${v}_${settings.place}.mp3`);
     }
 
+    // ===== 再生 =====
+    await playPlaylistGapless(playlist);
 
     // ===== 再生終了後に入力クリア =====
     clearDisplay();
