@@ -551,16 +551,16 @@ async function call() {
       );
     }
 
-    // ===== 部屋番号 1の位（rooms選択 → call音声を使用）=====
+    // ===== 部屋番号 1の位（call_1 統一・完全版）=====
     if (settings.room_1) {
 
-      // 1～9
-      if (/^11_[1-9]$/.test(settings.room_1)) {
+      // value が "0" 以外なら数字（1～9）
+      if (settings.room_1 !== "0") {
         playlist.push(
           `${baseUrl}/${cid}/05_call_1/${v}_${settings.room_1}.mp3`
         );
 
-      // 0・その他 → 「番」
+      // 0 の場合 → 「番」
       } else {
         playlist.push(
           `${baseUrl}/${cid}/05_call_1/${v}_05_番.mp3`
