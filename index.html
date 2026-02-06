@@ -514,9 +514,9 @@ async function call() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
-  // ★ Safari / iOS / Chrome 対策
+  // ★ Safari / iOS / Chrome 対策（await を使わない）
   if (audioCtx.state === "suspended") {
-    await audioCtx.resume();
+    audioCtx.resume();
   }
 
   showView("Information");   // 画面切替
