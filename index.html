@@ -512,7 +512,7 @@ function lockUI(lock) {
 async function call() {
   // ===== 未入力チェック（★追加）=====
   const numberInput = document.getElementById("numberInput");
-  const number = numberInput ? numberInput.value.trim() : "";
+  const number = inputNumber.trim();
 
   if (number === "") {
     alert("番号を入力してください");
