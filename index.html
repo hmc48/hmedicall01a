@@ -468,6 +468,10 @@ async function playPlaylistGapless(playlist) {
   const buffers = await Promise.all(
     playlist.map(async (url) => {
       const res = await fetch(url);
+      if (!res.ok) {
+        console.warn("skip missing audio:", url);
+        return null;
+      }
       const arrayBuffer = await res.arrayBuffer();
       return await audioCtx.decodeAudioData(arrayBuffer);
     })
@@ -478,7 +482,7 @@ async function playPlaylistGapless(playlist) {
   // スケジュール再生（ギャップレス）
   let startTime = audioCtx.currentTime;
 
-  buffers.forEach(buffer => {
+  buffers.filter(Boolean).forEach(buffer => {
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
     source.playbackRate.value = rate;
