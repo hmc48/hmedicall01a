@@ -513,6 +513,12 @@ async function call() {
   // 二重再生防止
   if (isPlaying) return;
 
+  // ★追加：未入力チェック（ここを修正）
+    if (currentNum === "") {
+      alert("番号を入力してください。");
+      return; // ここで処理を中断
+    }
+
   // ★ ユーザー操作後に AudioContext を生成（最重要）
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
