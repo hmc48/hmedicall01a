@@ -510,7 +510,16 @@ function lockUI(lock) {
 }
 
 async function call() {
-  // 二重再生防止
+  // ===== 未入力チェック（★追加）=====
+  const numberInput = document.getElementById("numberInput");
+  const number = numberInput ? numberInput.value.trim() : "";
+
+  if (number === "") {
+    alert("番号を入力してください");
+    return;   // ★ ここで音声処理を止める
+  }
+
+  // 二重再生防止  
   if (isPlaying) return;
 
   // ★ ユーザー操作後に AudioContext を生成（最重要）
