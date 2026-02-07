@@ -288,6 +288,17 @@ let isPlaying = false;
 // ===== シームレス再生用 AudioContext =====
 let audioCtx = null;
 
+// ★ ③ 画面OFF → ON 復帰時の完全リセット（iOS Safari 対策）
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    if (audioCtx) {
+      try {
+        audioCtx.close();
+      } catch (e) {}
+      audioCtx = null;
+    }
+  }
+});
 
 // 要素の取得
 const display = document.getElementById("display");
@@ -453,7 +464,11 @@ function loadFormValues() {
 
 /* ===== シームレス再生関数（★ここ）===== */
 async function playPlaylistGapless(playlist) {
-  // Safari / iOS 対策
+  // ★ 修正②：AudioContext 生存チェック（iOS省電力復帰対策）
+  if (!audioCtx || audioCtx.state === "closed") {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
   if (audioCtx.state === "suspended") {
     await audioCtx.resume();
   }
@@ -513,11 +528,14 @@ async function call() {
       return; // ここで処理を中断
     }
 
-  // ★ ユーザー操作後に AudioContext を生成（最重要）
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  // ★ iOS対策：毎回 AudioContext を作り直す
+  if (audioCtx) {
+    try {
+      audioCtx.close();
+    } catch(e) {}
   }
-
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+ 
   // ★ Safari / iOS / Chrome 対策（await を使わない）
   if (audioCtx.state === "suspended") {
     audioCtx.resume();
