@@ -357,30 +357,25 @@ function showView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
-  // ★ 画面切替時の初期化（ご案内画面）  
+  const area = document.getElementById("telopArea");
+  const content = document.getElementById("telopContent");
+
   if (id === "Information") {
     document.body.classList.add("info-mode");
     renderInformationHistory();
 
-    // ★追加：テロップの表示更新
-    const area = document.getElementById("telopArea");
-    const content = document.getElementById("telopContent");
-    
-    // 文字が入力されている場合のみ表示する
+    // テロップの表示制御
     if (settings.telopText && settings.telopText.trim() !== "") {
       content.innerText = settings.telopText;
-      
-      // ★追加：入力された秒数をアニメーション時間にセット
       const speed = settings.telopSpeed || 15;
       content.style.animationDuration = speed + "s"; 
-      
       area.style.display = "block";
-    }
     } else {
       area.style.display = "none";
     }
   } else {
-    document.body.classList.remove("info-mode"); // ★ 追加
+    document.body.classList.remove("info-mode");
+    if (area) area.style.display = "none"; // 他の画面では隠す
   }
 }
 
