@@ -158,6 +158,33 @@ nav button { margin:4px; padding:6px 12px; }
   cursor: pointer;
 }
 
+/* ★追加：テロップ全体の枠 */
+.telop-container {
+  width: 100%;
+  overflow: hidden; /* 枠外にはみ出た文字を隠す */
+  background: #333; /* 背景色 */
+  color: #fff;      /* 文字色 */
+  padding: 15px 0;
+  margin-top: 30px;
+  border-radius: 8px;
+}
+
+/* ★追加：流れる文字本体 */
+.telop-text {
+  display: inline-block;
+  white-space: nowrap;   /* 改行させない */
+  font-size: 40px;       /* 文字の大きさ */
+  font-weight: bold;
+  padding-left: 100%;    /* 右端からスタート */
+  animation: telop-scroll 15s linear infinite; /* 15秒かけてループ再生 */
+}
+
+/* ★追加：右から左へ動かすアニメーション定義 */
+@keyframes telop-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
 </style>
 </head>
 <body>
@@ -227,9 +254,11 @@ nav button { margin:4px; padding:6px 12px; }
   <p>100の位: <select id="rooms_100"><option value="">なし</option><option value="0">0</option><option value="03_100">1</option><option value="03_200">2</option><option value="03_300">3</option><option value="03_400">4</option><option value="03_500">5</option><option value="03_600">6</option><option value="03_700">7</option><option value="03_800">8</option><option value="03_900">9</option></select></p>
   <p>10の位: <select id="rooms_10"><option value="">なし</option><option value="0">0</option><option value="04_10">1</option><option value="04_20">2</option><option value="04_30">3</option><option value="04_40">4</option><option value="04_50">5</option><option value="04_60">6</option><option value="04_70">7</option><option value="04_80">8</option><option value="04_90">9</option></select></p>
   <p>1の位: <select id="rooms_1"><option value="">なし</option><option value="0">0</option><option value="05_1">1</option><option value="05_2">2</option><option value="05_3">3</option><option value="05_4">4</option><option value="05_5">5</option><option value="05_6">6</option><option value="05_7">7</option><option value="05_8">8</option><option value="05_9">9</option></select></p>
-  <p>呼出場所: <select id="place"><option value="">なし</option><option value="08_01">お入りください</option><option value="08_02">受付までお越しください</option><option value="08_03">処置室までお越しください</option><option value="08_04">診察室までお越しください</option><option value="08_05">窓口までお越しください</option><option value="08_06">カウンターまでお越しください</option></select></p>
 
-</div>
+  <p>呼出場所: <select id="place"><option value="">なし</option><option value="08_01">お入りください</option><option value="08_02">受付までお越しください</option><option value="08_03">処置室までお越しください</option><option value="08_04">診察室までお越しください</option><option value="08_05">窓口までお越しください</option><option value="08_06">カウンターまでお越しください</option></select></p>
+  <p>テロップ表示: <input type="text" id="telopInput" style="width: 85%; padding: 10px; font-size: 16px;" placeholder="例：順番にお呼びしますので、ロビーでお待ちください。"></p>
+
+  </div>
 
 <div id="Information" class="view">
   <h2 class="info-title">次の番号の方はお呼びしています</h2>
@@ -238,7 +267,12 @@ nav button { margin:4px; padding:6px 12px; }
   <div id="infoCurrent" class="info-current">----</div>
 
   <!-- 履歴 -->
+  ★★★
   <div id="infoHistory" class="info-history"></div>
+
+  <div id="telopArea" class="telop-container" style="display: none;">
+    <div id="telopContent" class="telop-text"></div>
+  </div>
 </div>
 
 <div id="terms" class="view">
@@ -318,8 +352,20 @@ function showView(id) {
 
   // ★ 画面切替時の初期化（ご案内画面）  
   if (id === "Information") {
-    document.body.classList.add("info-mode");   // ★ 追加
+    document.body.classList.add("info-mode");
     renderInformationHistory();
+
+    // ★追加：テロップの表示更新
+    const area = document.getElementById("telopArea");
+    const content = document.getElementById("telopContent");
+    
+    // 文字が入力されている場合のみ表示する
+    if (settings.telopText && settings.telopText.trim() !== "") {
+      content.innerText = settings.telopText;
+      area.style.display = "block";
+    } else {
+      area.style.display = "none";
+    }
   } else {
     document.body.classList.remove("info-mode"); // ★ 追加
   }
@@ -440,7 +486,9 @@ function saveSettings() {
     room_100: document.getElementById("rooms_100").value,
     room_10: document.getElementById("rooms_10").value,
     room_1: document.getElementById("rooms_1").value,
+
     place: document.getElementById("place").value,
+    telopText: document.getElementById("telopInput").value, 
     playbackRate: parseFloat(document.getElementById("playbackRate").value)
   };
   localStorage.setItem("settings", JSON.stringify(settings));
@@ -458,7 +506,9 @@ function loadFormValues() {
   document.getElementById("rooms_100").value = settings.room_100;
   document.getElementById("rooms_10").value = settings.room_10;
   document.getElementById("rooms_1").value = settings.room_1;
+
   document.getElementById("place").value = settings.place;
+  document.getElementById("telopInput").value = settings.telopText || ""; // ★追加
   document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
 }
 
