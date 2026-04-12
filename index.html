@@ -176,7 +176,14 @@ nav button { margin:4px; padding:6px 12px; }
   font-size: 40px;       /* 文字の大きさ */
   font-weight: bold;
   padding-left: 100%;    /* 右端からスタート */
-  animation: telop-scroll 15s linear infinite; /* 15秒かけてループ再生 */
+  /* ★ animation の秒数指定を削除（JSで設定するため） */
+.telop-text {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 40px;
+  font-weight: bold;
+  padding-left: 100%;
+  animation: telop-scroll linear infinite; /* 秒数を消して property だけ残す */
 }
 
 /* ★追加：右から左へ動かすアニメーション定義 */
@@ -256,8 +263,8 @@ nav button { margin:4px; padding:6px 12px; }
   <p>1の位: <select id="rooms_1"><option value="">なし</option><option value="0">0</option><option value="05_1">1</option><option value="05_2">2</option><option value="05_3">3</option><option value="05_4">4</option><option value="05_5">5</option><option value="05_6">6</option><option value="05_7">7</option><option value="05_8">8</option><option value="05_9">9</option></select></p>
 
   <p>呼出場所: <select id="place"><option value="">なし</option><option value="08_01">お入りください</option><option value="08_02">受付までお越しください</option><option value="08_03">処置室までお越しください</option><option value="08_04">診察室までお越しください</option><option value="08_05">窓口までお越しください</option><option value="08_06">カウンターまでお越しください</option></select></p>
-  <p>テロップ表示: <input type="text" id="telopInput" style="width: 85%; padding: 10px; font-size: 16px;" placeholder="例：順番にお呼びしますので、ロビーでお待ちください。"></p>
-
+  <p>テロップ表示: <input type="text" id="telopInput" style="width: 60%; padding: 10px;" placeholder="例：順番にお呼びしますので、ロビーでお待ちください。">
+     速度: <input type="number" id="telopSpeed" style="width: 60px; padding: 10px;" value="15">秒</p>
   </div>
 
 <div id="Information" class="view">
@@ -362,7 +369,13 @@ function showView(id) {
     // 文字が入力されている場合のみ表示する
     if (settings.telopText && settings.telopText.trim() !== "") {
       content.innerText = settings.telopText;
+      
+      // ★追加：入力された秒数をアニメーション時間にセット
+      const speed = settings.telopSpeed || 15;
+      content.style.animationDuration = speed + "s"; 
+      
       area.style.display = "block";
+    }
     } else {
       area.style.display = "none";
     }
@@ -488,7 +501,8 @@ function saveSettings() {
     room_1: document.getElementById("rooms_1").value,
 
     place: document.getElementById("place").value,
-    telopText: document.getElementById("telopInput").value, 
+    telopText: document.getElementById("telopInput").value,
+    telopSpeed: parseFloat(document.getElementById("telopSpeed").value) || 15, // ★追加
     playbackRate: parseFloat(document.getElementById("playbackRate").value)
   };
   localStorage.setItem("settings", JSON.stringify(settings));
@@ -509,6 +523,7 @@ function loadFormValues() {
 
   document.getElementById("place").value = settings.place;
   document.getElementById("telopInput").value = settings.telopText || ""; // ★追加
+  document.getElementById("telopSpeed").value = settings.telopSpeed || 15; // ★追加
   document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
 }
 
