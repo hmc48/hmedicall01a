@@ -170,20 +170,22 @@ nav button { margin:4px; padding:6px 12px; }
 }
 
 /* ★追加：流れる文字本体 */
+/* ★修正：重複を削除し、アニメーションの基本設定を整理 */
 .telop-text {
   display: inline-block;
   white-space: nowrap;   /* 改行させない */
   font-size: 40px;       /* 文字の大きさ */
   font-weight: bold;
   padding-left: 100%;    /* 右端からスタート */
-  /* ★ animation の秒数指定を削除（JSで設定するため） */
-.telop-text {
-  display: inline-block;
-  white-space: nowrap;
-  font-size: 40px;
-  font-weight: bold;
-  padding-left: 100%;
-  animation: telop-scroll linear infinite; /* 秒数を消して property だけ残す */
+  animation-name: telop-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* 右から左へ動かすアニメーション定義（変更なし） */
+@keyframes telop-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
 }
 
 /* ★追加：右から左へ動かすアニメーション定義 */
@@ -364,18 +366,24 @@ function showView(id) {
     document.body.classList.add("info-mode");
     renderInformationHistory();
 
-    // テロップの表示制御
+    // --- テロップの表示制御（修正箇所） ---
     if (settings.telopText && settings.telopText.trim() !== "") {
       content.innerText = settings.telopText;
       const speed = settings.telopSpeed || 15;
-      content.style.animationDuration = speed + "s"; 
+      
+      // 一度アニメーションを消して、表示状態にしてから再設定する
+      content.style.animation = 'none';
+      content.offsetHeight; // リフローを強制（再描画）
+      
       area.style.display = "block";
+      content.style.animation = `telop-scroll ${speed}s linear infinite`;
     } else {
       area.style.display = "none";
     }
+    // ------------------------------------
   } else {
     document.body.classList.remove("info-mode");
-    if (area) area.style.display = "none"; // 他の画面では隠す
+    if (area) area.style.display = "none";
   }
 }
 
