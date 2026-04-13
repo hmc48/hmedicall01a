@@ -27,6 +27,55 @@
 .character-detail-button:hover {
   background-color: #117a8b;
 }
+
+/* ===== スマートフォン横向き：全体を縮小表示（4列維持） ===== */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  /* ヘッダーの高さも圧縮して表示領域を確保 */
+  header { 
+    min-height: 45px !important; 
+    padding: 5px !important; 
+  }
+  header h2 { 
+    font-size: 22px !important; 
+    margin-top: 0 !important; 
+    line-height: 45px; 
+  }
+  #headerCharacterImage { height: 45px !important; }
+  #headerImageCredit { display: none; } /* クレジットは場所を取るため非表示 */
+
+  /* ご案内画面全体の余白を詰め、中身をスケーリング */
+  #Information {
+    padding: 5px 10px !important;
+  }
+
+  .info-title { 
+    font-size: 16px; 
+    margin: 5px 0 !important; 
+  }
+
+  /* メインの番号表示をスリム化 */
+  .info-current { 
+    font-size: 70px;    /* 100pxから縮小 */
+    padding: 10px 0;    /* 30pxから縮小 */
+    margin-bottom: 10px; 
+    border-radius: 8px;
+  }
+
+  /* 4列を維持したままボックスを小さく */
+  .info-history { 
+    grid-template-columns: repeat(4, 1fr); /* 4列維持 */
+    gap: 8px; 
+  }
+
+  .info-box { 
+    font-size: 24px;    /* 32pxから縮小 */
+    padding: 10px 0;    /* 20pxから縮小 */
+    border-radius: 6px;
+  }
+}
+
+
+
  </style>
 <style>
 body { font-family: system-ui; margin:0; background:#f2f2f7; }
