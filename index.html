@@ -76,32 +76,31 @@ nav button { margin:4px; padding:6px 12px; }
   margin: 10px 0;
 }
 
+/* ===== ご案内画面：ベース（PC・大画面向け）に差し替え ===== */
 .info-current {
   background: #007bff;
   color: #fff;
-  font-size: 80px;
+  font-size: clamp(80px, 15vh, 140px);
   font-weight: bold;
   text-align: center;
-  padding: 10px 0;
+  padding: 2vh 0;
   border-radius: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-/* 履歴グリッド */
 .info-history {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+  gap: 15px;
 }
 
-/* 履歴ボックス */
 .info-box {
   background: #007bff;
   color: #fff;
-  font-size: 24px;
+  font-size: 36px;
   font-weight: bold;
   text-align: center;
-  padding: 8px 0;
+  padding: 15px 0;
   border-radius: 10px;
 }
 
@@ -159,24 +158,23 @@ nav button { margin:4px; padding:6px 12px; }
 }
 
 /* ★追加：テロップ全体の枠 */
+★★★
 .telop-container {
   width: 100%;
-  overflow: hidden; /* 枠外にはみ出た文字を隠す */
-  background: #333; /* 背景色 */
-  color: #fff;      /* 文字色 */
+  overflow: hidden;
+  background: #333;
+  color: #fff;
   padding: 10px 0;
-  margin-top: 15px;
+  margin-top: 20px;
   border-radius: 8px;
 }
 
-/* ★追加：流れる文字本体 */
-/* ★修正：重複を削除し、アニメーションの基本設定を整理 */
 .telop-text {
   display: inline-block;
-  white-space: nowrap;   /* 改行させない */
-  font-size: 40px;       /* 文字の大きさ */
+  white-space: nowrap;
+  font-size: clamp(24px, 4vh, 40px);
   font-weight: bold;
-  padding-left: 100%;    /* 右端からスタート */
+  padding-left: 100%;
   animation-name: telop-scroll;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -192,6 +190,42 @@ nav button { margin:4px; padding:6px 12px; }
 @keyframes telop-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-100%); }
+}
+
+/* ===== スマートフォン（縦・横）向けに新規追加 ===== */
+
+/* 縦向きスマホ：全体をコンパクトに凝縮 */
+@media (max-width: 480px) {
+  .info-current {
+    font-size: 80px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+  .info-history { gap: 6px; }
+  .info-box { font-size: 22px; padding: 8px 0; }
+  .telop-text { font-size: 24px; }
+}
+
+/* 横向きスマホ：縦幅を稼ぐために要素を削り、配置を最適化 */
+@media (max-height: 450px) and (orientation: landscape) {
+  header { min-height: 50px; padding: 5px; }
+  header h2 { font-size: 24px !important; margin: 0; }
+  #headerCharacterImage, #headerImageCredit { display: none; } /* 画像を隠してスペース確保 */
+  .info-title { display: none; } /* タイトルを隠してメインを上げる */
+
+  .info-current {
+    font-size: 60px; 
+    padding: 5px 0;
+    margin-bottom: 5px;
+  }
+  .info-history {
+    grid-template-columns: repeat(10, 1fr); /* 横に並べて縦を節約 */
+    overflow-x: auto;
+    gap: 5px;
+  }
+  .info-box { font-size: 18px; padding: 5px; }
+  .telop-container { margin-top: 5px; padding: 5px 0; }
+  .telop-text { font-size: 20px; }
 }
 
 </style>
