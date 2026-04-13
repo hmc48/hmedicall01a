@@ -76,31 +76,32 @@ nav button { margin:4px; padding:6px 12px; }
   margin: 10px 0;
 }
 
-/* ===== ご案内画面：ベース（PC・大画面向け）に差し替え ===== */
 .info-current {
   background: #007bff;
   color: #fff;
-  font-size: clamp(80px, 15vh, 140px);
+  font-size: 100px;
   font-weight: bold;
   text-align: center;
-  padding: 2vh 0;
+  padding: 30px 0;
   border-radius: 12px;
   margin-bottom: 20px;
 }
 
+/* 履歴グリッド */
 .info-history {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
+/* 履歴ボックス */
 .info-box {
   background: #007bff;
   color: #fff;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: bold;
   text-align: center;
-  padding: 15px 0;
+  padding: 20px 0;
   border-radius: 10px;
 }
 
@@ -155,77 +156,6 @@ nav button { margin:4px; padding:6px 12px; }
   border: none;
   border-radius: 6px;
   cursor: pointer;
-}
-
-/* ★追加：テロップ全体の枠 */
-★★★
-.telop-container {
-  width: 100%;
-  overflow: hidden;
-  background: #333;
-  color: #fff;
-  padding: 10px 0;
-  margin-top: 20px;
-  border-radius: 8px;
-}
-
-.telop-text {
-  display: inline-block;
-  white-space: nowrap;
-  font-size: clamp(24px, 4vh, 40px);
-  font-weight: bold;
-  padding-left: 100%;
-  animation-name: telop-scroll;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-/* 右から左へ動かすアニメーション定義（変更なし） */
-@keyframes telop-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
-}
-
-/* ★追加：右から左へ動かすアニメーション定義 */
-@keyframes telop-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
-}
-
-/* ===== スマートフォン（縦・横）向けに新規追加 ===== */
-
-/* 縦向きスマホ：全体をコンパクトに凝縮 */
-@media (max-width: 480px) {
-  .info-current {
-    font-size: 80px;
-    padding: 10px 0;
-    margin-bottom: 10px;
-  }
-  .info-history { gap: 6px; }
-  .info-box { font-size: 22px; padding: 8px 0; }
-  .telop-text { font-size: 24px; }
-}
-
-/* 横向きスマホ：縦幅を稼ぐために要素を削り、配置を最適化 */
-@media (max-height: 450px) and (orientation: landscape) {
-  header { min-height: 50px; padding: 5px; }
-  header h2 { font-size: 24px !important; margin: 0; }
-  #headerCharacterImage, #headerImageCredit { display: none; } /* 画像を隠してスペース確保 */
-  .info-title { display: none; } /* タイトルを隠してメインを上げる */
-
-  .info-current {
-    font-size: 60px; 
-    padding: 5px 0;
-    margin-bottom: 5px;
-  }
-  .info-history {
-    grid-template-columns: repeat(10, 1fr); /* 横に並べて縦を節約 */
-    overflow-x: auto;
-    gap: 5px;
-  }
-  .info-box { font-size: 18px; padding: 5px; }
-  .telop-container { margin-top: 5px; padding: 5px 0; }
-  .telop-text { font-size: 20px; }
 }
 
 </style>
@@ -297,11 +227,9 @@ nav button { margin:4px; padding:6px 12px; }
   <p>100の位: <select id="rooms_100"><option value="">なし</option><option value="0">0</option><option value="03_100">1</option><option value="03_200">2</option><option value="03_300">3</option><option value="03_400">4</option><option value="03_500">5</option><option value="03_600">6</option><option value="03_700">7</option><option value="03_800">8</option><option value="03_900">9</option></select></p>
   <p>10の位: <select id="rooms_10"><option value="">なし</option><option value="0">0</option><option value="04_10">1</option><option value="04_20">2</option><option value="04_30">3</option><option value="04_40">4</option><option value="04_50">5</option><option value="04_60">6</option><option value="04_70">7</option><option value="04_80">8</option><option value="04_90">9</option></select></p>
   <p>1の位: <select id="rooms_1"><option value="">なし</option><option value="0">0</option><option value="05_1">1</option><option value="05_2">2</option><option value="05_3">3</option><option value="05_4">4</option><option value="05_5">5</option><option value="05_6">6</option><option value="05_7">7</option><option value="05_8">8</option><option value="05_9">9</option></select></p>
-
   <p>呼出場所: <select id="place"><option value="">なし</option><option value="08_01">お入りください</option><option value="08_02">受付までお越しください</option><option value="08_03">処置室までお越しください</option><option value="08_04">診察室までお越しください</option><option value="08_05">窓口までお越しください</option><option value="08_06">カウンターまでお越しください</option></select></p>
-  <p>テロップ表示: <input type="text" id="telopInput" style="width: 60%; padding: 10px;" placeholder="例：順番にお呼びしますので、ロビーでお待ちください。">
-     速度: <input type="number" id="telopSpeed" style="width: 60px; padding: 10px;" value="15">秒</p>
-  </div>
+
+</div>
 
 <div id="Information" class="view">
   <h2 class="info-title">次の番号の方はお呼びしています</h2>
@@ -311,10 +239,6 @@ nav button { margin:4px; padding:6px 12px; }
 
   <!-- 履歴 -->
   <div id="infoHistory" class="info-history"></div>
-
-  <div id="telopArea" class="telop-container" style="display: none;">
-    <div id="telopContent" class="telop-text"></div>
-  </div>
 </div>
 
 <div id="terms" class="view">
@@ -392,31 +316,12 @@ function showView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
-  const area = document.getElementById("telopArea");
-  const content = document.getElementById("telopContent");
-
+  // ★ 画面切替時の初期化（ご案内画面）  
   if (id === "Information") {
-    document.body.classList.add("info-mode");
+    document.body.classList.add("info-mode");   // ★ 追加
     renderInformationHistory();
-
-    // --- テロップの表示制御（修正箇所） ---
-    if (settings.telopText && settings.telopText.trim() !== "") {
-      content.innerText = settings.telopText;
-      const speed = settings.telopSpeed || 15;
-      
-      // 一度アニメーションを消して、表示状態にしてから再設定する
-      content.style.animation = 'none';
-      content.offsetHeight; // リフローを強制（再描画）
-      
-      area.style.display = "block";
-      content.style.animation = `telop-scroll ${speed}s linear infinite`;
-    } else {
-      area.style.display = "none";
-    }
-    // ------------------------------------
   } else {
-    document.body.classList.remove("info-mode");
-    if (area) area.style.display = "none";
+    document.body.classList.remove("info-mode"); // ★ 追加
   }
 }
 
@@ -535,10 +440,7 @@ function saveSettings() {
     room_100: document.getElementById("rooms_100").value,
     room_10: document.getElementById("rooms_10").value,
     room_1: document.getElementById("rooms_1").value,
-
     place: document.getElementById("place").value,
-    telopText: document.getElementById("telopInput").value,
-    telopSpeed: parseFloat(document.getElementById("telopSpeed").value) || 15, // ★追加
     playbackRate: parseFloat(document.getElementById("playbackRate").value)
   };
   localStorage.setItem("settings", JSON.stringify(settings));
@@ -556,10 +458,7 @@ function loadFormValues() {
   document.getElementById("rooms_100").value = settings.room_100;
   document.getElementById("rooms_10").value = settings.room_10;
   document.getElementById("rooms_1").value = settings.room_1;
-
   document.getElementById("place").value = settings.place;
-  document.getElementById("telopInput").value = settings.telopText || ""; // ★追加
-  document.getElementById("telopSpeed").value = settings.telopSpeed || 15; // ★追加
   document.getElementById("playbackRate").value = settings.playbackRate || 1.0;
 }
 
